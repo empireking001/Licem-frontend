@@ -3,7 +3,7 @@ import { Icon, PageBanner } from '../components/UI';
 import { useApp } from '../context/AppContext';
 
 export default function ContactPage() {
-  const { showToast, pageTopPadding } = useApp();
+ const { showToast, pageTopPadding, settings } = useApp();
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
 
