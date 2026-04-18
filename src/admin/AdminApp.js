@@ -15,7 +15,7 @@ import {
   AdminMedia,
   AdminSettings,
   AdminPrayerWall,
-  AdminAnnouncements, AdminChangePassword
+  AdminAnnouncements,
 } from "./AdminPanels";
 
 const MENU = [
