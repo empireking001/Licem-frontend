@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { key: "sermons", label: "Sermons" },
   { key: "events", label: "Events" },
   { key: "gallery", label: "Gallery" },
+  { key: "radio", label: "📻 Radio" },
   { key: "prayer", label: "Prayer Wall" },
   { key: "blog", label: "Blog" },
   { key: "give", label: "Give" },

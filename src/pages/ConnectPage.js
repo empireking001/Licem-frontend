@@ -22,20 +22,22 @@ export default function ConnectPage() {
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    gender: "",
-    ageGroup: "",
-    maritalStatus: "",
-    visitType: "First Time",
-    howHeard: "",
-    interests: [],
-    prayerNeeds: "",
-  });
+const [form, setForm] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
+  gender: "",
+  ageGroup: "",
+  maritalStatus: "",
+  birthday: "",
+  birthMonth: "",
+  visitType: "First Time",
+  howHeard: "",
+  interests: [],
+  prayerNeeds: "",
+});
 
   const update = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -345,6 +347,55 @@ export default function ConnectPage() {
                   onChange={(e) => update("address", e.target.value)}
                   placeholder="Your home address"
                 />
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 14,
+                }}
+              >
+                <div style={field}>
+                  <label style={label}>Birthday Day</label>
+                  <select
+                    value={form.birthday}
+                    onChange={(e) => update("birthday", e.target.value)}
+                  >
+                    <option value="">Select day</option>
+                    {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div style={field}>
+                  <label style={label}>Birthday Month</label>
+                  <select
+                    value={form.birthMonth}
+                    onChange={(e) => update("birthMonth", e.target.value)}
+                  >
+                    <option value="">Select month</option>
+                    {[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ].map((m, i) => (
+                      <option key={m} value={i + 1}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div style={btnRow}>

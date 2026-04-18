@@ -15,7 +15,7 @@ import {
   AdminMedia,
   AdminSettings,
   AdminPrayerWall,
-  AdminAnnouncements,
+  AdminAnnouncements, AdminChangePassword
 } from "./AdminPanels";
 
 const MENU = [
@@ -31,6 +31,7 @@ const MENU = [
   { key: "donations", label: "Donations", icon: "dollar" },
   { key: "users", label: "Users", icon: "users" },
   { key: "settings", label: "Site Settings", icon: "settings" },
+  { key: "password", label: "Change Password", icon: "lock" },
   { key: "AdminConnectManager", label: "Connect Cards", icon: "globe" },
   { key: "testimonies", label: "Testimonies", icon: "heart" },
 ];
@@ -172,20 +173,21 @@ export default function AdminApp() {
   if (!user) return <><AdminLogin /><ToastDisplay /></>;
 
   const PANELS = {
-    overview:  <AdminOverview  setActive={setActive} />,
-    sermons:   <AdminSermons />,
-    events:    <AdminEvents />,
-    blog:      <AdminBlog />,
-    gallery:   <AdminGallery />,
-    media:     <AdminMedia />,
-    comments:  <AdminComments />,
+    overview: <AdminOverview setActive={setActive} />,
+    sermons: <AdminSermons />,
+    events: <AdminEvents />,
+    blog: <AdminBlog />,
+    gallery: <AdminGallery />,
+    media: <AdminMedia />,
+    comments: <AdminComments />,
     donations: <AdminDonations />,
-    users:     <AdminUsers />,
-    prayer:    <AdminPrayerWall />,
+    users: <AdminUsers />,
+    prayer: <AdminPrayerWall />,
     announcements: <AdminAnnouncements />,
-    settings:  <AdminSettings />,
+    settings: <AdminSettings />,
     AdminConnectManager: <AdminConnectManager />,
     testimonies: <TestimonyManager />,
+    password: <AdminChangePassword />,
   };
 
   return (
@@ -198,6 +200,128 @@ export default function AdminApp() {
         </main>
       </div>
       <ToastDisplay />
+    </div>
+  );
+}
+
+function AdminChangePassword() {
+  const { showToast } = useApp();
+  const [form, setForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const S = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const submit = async () => {
+    if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
+      showToast('Please fill in all fields.', 'error'); return;
+    }
+    if (form.newPassword.length < 6) {
+      showToast('New password must be at least 6 characters.', 'error'); return;
+    }
+    if (form.newPassword !== form.confirmPassword) {
+      showToast('New passwords do not match.', 'error'); return;
+    }
+    setLoading(true);
+    try {
+      await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
+        },
+        body: JSON.stringify({
+          currentPassword: form.currentPassword,
+          newPassword: form.newPassword,
+        }),
+      }).then(r => r.json()).then(data => {
+        if (data.message === 'Password updated successfully') {
+          setDone(true);
+          setForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+          showToast('Password changed successfully!');
+        } else {
+          showToast(data.message || 'Error changing password.', 'error');
+        }
+      });
+    } catch {
+      showToast('Network error. Please try again.', 'error');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{ padding: 28 }}>
+      <div style={{ maxWidth: 480 }}>
+        <h3 style={{ fontSize: 20, marginBottom: 6 }}>Change Password</h3>
+        <p style={{ color: 'var(--gray-mid)', fontSize: 14, marginBottom: 28, lineHeight: 1.6 }}>
+          Update your admin account password. You will need to log in again after changing it.
+        </p>
+
+        {done && (
+          <div style={{ padding: '14px 18px', background: 'var(--success-pale)', border: '1px solid var(--success)', borderRadius: 10, color: 'var(--success)', fontSize: 14, fontWeight: 600, marginBottom: 24 }}>
+            ✓ Password changed successfully!
+          </div>
+        )}
+
+        <div className="card" style={{ padding: 28 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="form-group">
+              <label>Current Password</label>
+              <input
+                type="password"
+                value={form.currentPassword}
+                onChange={e => S('currentPassword', e.target.value)}
+                placeholder="Enter your current password"
+              />
+            </div>
+            <div className="form-group">
+              <label>New Password</label>
+              <input
+                type="password"
+                value={form.newPassword}
+                onChange={e => S('newPassword', e.target.value)}
+                placeholder="Minimum 6 characters"
+              />
+            </div>
+            <div className="form-group">
+              <label>Confirm New Password</label>
+              <input
+                type="password"
+                value={form.confirmPassword}
+                onChange={e => S('confirmPassword', e.target.value)}
+                placeholder="Repeat new password"
+                onKeyDown={e => e.key === 'Enter' && submit()}
+              />
+            </div>
+
+            {form.newPassword && form.confirmPassword && form.newPassword !== form.confirmPassword && (
+              <div style={{ fontSize: 13, color: 'var(--danger)', fontWeight: 600 }}>
+                ✗ Passwords do not match
+              </div>
+            )}
+            {form.newPassword && form.confirmPassword && form.newPassword === form.confirmPassword && (
+              <div style={{ fontSize: 13, color: 'var(--success)', fontWeight: 600 }}>
+                ✓ Passwords match
+              </div>
+            )}
+
+            <button
+              className="btn btn-primary"
+              style={{ justifyContent: 'center', marginTop: 8 }}
+              onClick={submit}
+              disabled={loading}
+            >
+              {loading ? 'Updating...' : '🔐 Update Password'}
+            </button>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 20, padding: '14px 16px', background: 'var(--warning-pale)', borderRadius: 10, fontSize: 13, color: 'var(--gray-dark)', lineHeight: 1.7, border: '1px solid var(--warning)' }}>
+          <strong>⚠️ Security tips:</strong><br />
+          Use at least 8 characters with a mix of letters, numbers and symbols.<br />
+          Never share your admin password with anyone.
+        </div>
+      </div>
     </div>
   );
 }

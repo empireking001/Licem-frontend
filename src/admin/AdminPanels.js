@@ -1343,6 +1343,181 @@ export function AdminSettings() {
                     </div>
                   </div>
                 </div>
+                <div style={{ marginTop: 8 }}>
+                  <h4
+                    style={{
+                      fontSize: 16,
+                      fontFamily: "var(--font-body)",
+                      fontWeight: 700,
+                      marginBottom: 4,
+                      paddingTop: 16,
+                      borderTop: "1px solid var(--gray-light)",
+                    }}
+                  >
+                    Face of the Week
+                  </h4>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: "var(--gray-mid)",
+                      marginBottom: 16,
+                    }}
+                  >
+                    Highlight a church member, minister, or worker on the
+                    homepage each week.
+                  </p>
+
+                  {s?.faceOfWeekImage && (
+                    <div
+                      style={{
+                        marginBottom: 16,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 14,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 80,
+                          height: 80,
+                          borderRadius: 12,
+                          overflow: "hidden",
+                          border: "2px solid var(--gray-light)",
+                        }}
+                      >
+                        <img
+                          src={s.faceOfWeekImage}
+                          alt="Face of week"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 600,
+                            marginBottom: 6,
+                          }}
+                        >
+                          {s.faceOfWeekName || "No name set"}
+                        </div>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => {
+                            U("faceOfWeekImage", "");
+                            U("faceOfWeekName", "");
+                            U("faceOfWeekTitle", "");
+                            U("faceOfWeekQuote", "");
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 14,
+                    }}
+                  >
+                    <div className="form-group">
+                      <label>Full Name</label>
+                      <input
+                        value={s?.faceOfWeekName || ""}
+                        onChange={(e) => U("faceOfWeekName", e.target.value)}
+                        placeholder="e.g. Sister Mary Johnson"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Title or Role</label>
+                      <input
+                        value={s?.faceOfWeekTitle || ""}
+                        onChange={(e) => U("faceOfWeekTitle", e.target.value)}
+                        placeholder="e.g. Head of Women's Fellowship"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Quote or Message</label>
+                      <textarea
+                        rows={3}
+                        value={s?.faceOfWeekQuote || ""}
+                        onChange={(e) => U("faceOfWeekQuote", e.target.value)}
+                        placeholder="A short inspiring quote or message from them..."
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Photo — Upload from computer</label>
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                          padding: "12px 16px",
+                          border: "2px dashed var(--gray-light)",
+                          borderRadius: 10,
+                          cursor: "pointer",
+                          background: "var(--white)",
+                        }}
+                      >
+                        <span style={{ fontSize: 24 }}>📸</span>
+                        <div>
+                          <div style={{ fontSize: 14, fontWeight: 600 }}>
+                            Click to choose photo
+                          </div>
+                          <div
+                            style={{ fontSize: 12, color: "var(--gray-mid)" }}
+                          >
+                            JPG or PNG — clear face photo recommended
+                          </div>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            const fd = new FormData();
+                            fd.append("files", file);
+                            try {
+                              const res = await fetch("/api/media/upload", {
+                                method: "POST",
+                                headers: {
+                                  Authorization: `Bearer ${localStorage.getItem("gl_token")}`,
+                                },
+                                body: fd,
+                              });
+                              const data = await res.json();
+                              if (data.files && data.files[0]) {
+                                const url = data.files[0].url.startsWith("/")
+                                  ? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}${data.files[0].url}`
+                                  : data.files[0].url;
+                                U("faceOfWeekImage", url);
+                              }
+                            } catch {
+                              alert("Upload failed. Try URL below.");
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+                    <div className="form-group">
+                      <label>Or paste photo URL</label>
+                      <input
+                        value={s?.faceOfWeekImage || ""}
+                        onChange={(e) => U("faceOfWeekImage", e.target.value)}
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -1974,6 +2149,102 @@ export function AdminSettings() {
                     </div>
                   </div>
                 </label>
+                <div className="divider" />
+                <h5
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 700,
+                    marginBottom: 16,
+                  }}
+                >
+                  📻 Online Radio
+                </h5>
+                <div className="form-group" style={{ marginBottom: 14 }}>
+                  <label>Radio Station Name</label>
+                  <input
+                    value={s?.radioName || ""}
+                    onChange={(e) => U("radioName", e.target.value)}
+                    placeholder="LICEM Radio"
+                  />
+                </div>
+                <div className="form-group" style={{ marginBottom: 14 }}>
+                  <label>Stream URL</label>
+                  <input
+                    value={s?.radioStreamUrl || ""}
+                    onChange={(e) => U("radioStreamUrl", e.target.value)}
+                    placeholder="https://stream.zeno.fm/xxxxx or any .mp3 / .aac stream URL"
+                  />
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--gray-soft)",
+                      marginTop: 4,
+                    }}
+                  >
+                    Works with: Zeno.fm, Radio.co, Shoutcast, Icecast, or any
+                    direct stream URL ending in .mp3 or .aac
+                  </div>
+                </div>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    cursor: "pointer",
+                    padding: "14px 16px",
+                    background: s?.radioIsLive
+                      ? "var(--danger-pale)"
+                      : "var(--gray-ghost)",
+                    borderRadius: 10,
+                  }}
+                >
+                  <div
+                    className={`toggle ${s?.radioIsLive ? "on" : ""}`}
+                    style={{
+                      background: s?.radioIsLive ? "var(--danger)" : undefined,
+                    }}
+                    onClick={() => U("radioIsLive", !s?.radioIsLive)}
+                  />
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 14,
+                        color: s?.radioIsLive
+                          ? "var(--danger)"
+                          : "var(--charcoal)",
+                      }}
+                    >
+                      Mark Radio as LIVE
+                    </div>
+                    <div style={{ fontSize: 12, color: "var(--gray-mid)" }}>
+                      Shows a red LIVE badge on the radio page
+                    </div>
+                  </div>
+                </label>
+                <div
+                  style={{
+                    marginTop: 14,
+                    padding: "14px 16px",
+                    background: "var(--info-pale)",
+                    borderRadius: 10,
+                    fontSize: 13,
+                    color: "var(--gray-dark)",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  <strong>Free radio stream options:</strong>
+                  <br />
+                  1. <strong>Zeno.fm</strong> — free, sign up at zeno.fm, get
+                  your stream URL
+                  <br />
+                  2. <strong>Mixlr</strong> — mixlr.com — easy mobile streaming
+                  <br />
+                  3. <strong>Radio.co</strong> — professional, paid
+                  <br />
+                  4. Any <strong>.mp3 direct link</strong> works as a stream URL
+                </div>
               </div>
             )}
 

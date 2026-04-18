@@ -16,6 +16,7 @@ import GalleryPage from "./pages/GalleryPage";
 import BlogPage from "./pages/BlogPage";
 import GivePage from "./pages/GivePage";
 import ContactPage from "./pages/ContactPage";
+import RadioPage from "./pages/RadioPage";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import TestimoniesPage from "./pages/TestimoniesPage";
 import Connectpage from "./pages/ConnectPage";
@@ -41,6 +42,7 @@ function Router() {
     blog: <BlogPage />,
     give: <GivePage />,
     contact: <ContactPage />,
+    radio: <RadioPage />,
     prayer: <PrayerWallPage />,
     testimonies: <TestimoniesPage />,
     connect: <Connectpage />,
