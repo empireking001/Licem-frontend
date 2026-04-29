@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Icon, Spinner } from '../components/UI';
-import { sermonsAPI, eventsAPI } from '../api';
+import API, { sermonsAPI, eventsAPI } from '../api';
 
 export default function HomePage() {
   const { pageTopPadding } = useApp();
