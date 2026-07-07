@@ -2928,4 +2928,188 @@ export function AdminAnnouncements() {
     </div>
   );
 }
+export function AdminContactMessages() {
+  const { showToast } = useApp();
+  const [messages, setMessages] = useState([]);
+  const [loading,  setLoading]  = useState(true);
+  const [selected, setSelected] = useState(null);
+  const [confirm,  setConfirm]  = useState(null);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/contact', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
+        },
+      });
+      const data = await res.json();
+      setMessages(Array.isArray(data) ? data : []);
+    } catch {
+      setMessages([]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const markRead = async (id) => {
+    try {
+      await fetch(`/api/contact/${id}/read`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
+        },
+      });
+      setMessages(m => m.map(x => x._id === id ? { ...x, read: true } : x));
+    } catch {
+      showToast('Error.', 'error');
+    }
+  };
+
+  const del = async () => {
+    try {
+      await fetch(`/api/contact/${confirm.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
+        },
+      });
+      setMessages(m => m.filter(x => x._id !== confirm.id));
+      if (selected?._id === confirm.id) setSelected(null);
+      showToast('Message deleted.');
+    } catch {
+      showToast('Error.', 'error');
+    }
+    setConfirm(null);
+  };
+
+  const unreadCount = messages.filter(m => !m.read).length;
+
+  return (
+    <div style={{ padding: 28 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+        <div>
+          <h3 style={{ fontSize: 20 }}>Contact Messages</h3>
+          <p style={{ color: 'var(--gray-mid)', fontSize: 14, marginTop: 4 }}>
+            {messages.length} total
+            {unreadCount > 0 && (
+              <span style={{ marginLeft: 10, background: 'var(--danger)', color: 'white', borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 700 }}>
+                {unreadCount} unread
+              </span>
+            )}
+          </p>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 1.4fr' : '1fr', gap: 20 }}>
+
+        {/* Message list */}
+        <div className="card table-wrap">
+          {loading ? (
+            <div style={{ padding: 48, textAlign: 'center' }}><Spinner size={32} /></div>
+          ) : messages.length === 0 ? (
+            <EmptyState icon="mail" title="No messages yet" desc="Contact form submissions will appear here." />
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>From</th>
+                  <th>Subject</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {messages.map(m => (
+                  <tr
+                    key={m._id}
+                    style={{ cursor: 'pointer', background: selected?._id === m._id ? 'var(--forest-ghost)' : undefined }}
+                    onClick={() => { setSelected(m); markRead(m._id); }}
+                  >
+                    <td>
+                      <div style={{ fontWeight: m.read ? 400 : 700, fontSize: 14 }}>{m.name}</div>
+                      <div style={{ fontSize: 12, color: 'var(--gray-mid)' }}>{m.email}</div>
+                    </td>
+                    <td style={{ fontSize: 13, maxWidth: 160 }}>
+                      <div style={{ fontWeight: m.read ? 400 : 600 }} className="truncate">
+                        {m.subject || '(No subject)'}
+                      </div>
+                    </td>
+                    <td style={{ fontSize: 12, color: 'var(--gray-mid)', whiteSpace: 'nowrap' }}>
+                      {new Date(m.createdAt).toLocaleDateString()}
+                    </td>
+                    <td>
+                      <span className={`badge ${m.read ? 'badge-gray' : 'badge-green'}`}>
+                        {m.read ? 'Read' : 'New'}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={e => { e.stopPropagation(); setConfirm({ id: m._id }); }}
+                      >
+                        <Icon name="trash" size={12} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* Message detail */}
+        {selected && (
+          <div className="card" style={{ padding: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, paddingBottom: 16, borderBottom: '1px solid var(--gray-light)' }}>
+              <h4 style={{ fontSize: 18 }}>{selected.subject || '(No subject)'}</h4>
+              <button className="modal-close" onClick={() => setSelected(null)}>×</button>
+            </div>
+            <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg, var(--forest), var(--gold))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: 16, flexShrink: 0 }}>
+                {selected.name?.[0]?.toUpperCase() || 'U'}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>{selected.name}</div>
+                <div style={{ fontSize: 13, color: 'var(--gray-mid)' }}>{selected.email}</div>
+                <div style={{ fontSize: 12, color: 'var(--gray-soft)', marginTop: 2 }}>
+                  {new Date(selected.createdAt).toDateString()} at {new Date(selected.createdAt).toLocaleTimeString()}
+                </div>
+              </div>
+            </div>
+            <div style={{ padding: '16px 20px', background: 'var(--gray-ghost)', borderRadius: 10, lineHeight: 1.85, fontSize: 15, color: 'var(--gray-dark)', whiteSpace: 'pre-wrap' }}>
+              {selected.message}
+            </div>
+            <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
+              <a
+                href={`mailto:${selected.email}?subject=Re: ${selected.subject || 'Your message'}`}
+                className="btn btn-primary btn-sm"
+                style={{ textDecoration: 'none' }}
+              >
+                <Icon name="mail" size={13} /> Reply via Email
+              </a>
+              <button
+                className="btn btn-danger btn-sm"
+                onClick={() => setConfirm({ id: selected._id })}
+              >
+                <Icon name="trash" size={13} /> Delete
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {confirm && (
+        <ConfirmModal
+          title="Delete Message?"
+          message="This message will be permanently deleted."
+          onConfirm={del}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
 // export default AdminComments

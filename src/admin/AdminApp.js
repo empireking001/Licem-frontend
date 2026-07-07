@@ -10,6 +10,7 @@ import AdminConnectManager from './AdminConnectManager';
 import TestimonyManager from './TestimonyManager';
 import {
   AdminComments,
+  AdminContactMessages
   AdminDonations,
   AdminUsers,
   AdminMedia,
@@ -28,6 +29,7 @@ const MENU = [
   { key: "prayer", label: "Prayer Wall", icon: "heart" },
   { key: "announcements", label: "Announcements", icon: "bell" },
   { key: "comments", label: "Comments", icon: "chat" },
+  { key: "messages", label: "Contact Messages", icon: "mail" },
   { key: "donations", label: "Donations", icon: "dollar" },
   { key: "users", label: "Users", icon: "users" },
   { key: "settings", label: "Site Settings", icon: "settings" },
@@ -240,6 +242,7 @@ export default function AdminApp() {
     gallery: <AdminGallery />,
     media: <AdminMedia />,
     comments: <AdminComments />,
+    messages: <AdminContactMessages />,
     donations: <AdminDonations />,
     users: <AdminUsers />,
     prayer: <AdminPrayerWall />,
