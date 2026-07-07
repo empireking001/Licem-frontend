@@ -215,6 +215,94 @@ a:hover { color: var(--forest-mid); }
   .container, .container-sm, .container-lg { padding: 0 16px; }
 }
 
+/* ── Responsive page layouts ──────────────────────────
+   Media-query-aware replacements for the inline-style grids
+   that previously could not adapt on mobile. */
+
+/* Footer: brand + 3 link columns */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+
+/* Two equal columns (text + image sections) */
+.split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+/* Sidebar form + content feed (Prayer Wall, Testimonies) */
+.split-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* 4-up stats band */
+.stats-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+/* 4-up square photo strip */
+.gallery-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Fixed photo + flexible text (Face of the Week) */
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+/* Side-by-side form fields */
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Grid items default to min-width:auto, which lets long unbreakable
+   content (emails, phone numbers) force the track wider than the
+   viewport. Allow columns to actually shrink, and wrap long strings. */
+.footer-grid > *,
+.split-2 > *,
+.split-sidebar > *,
+.spotlight-grid > * {
+  min-width: 0;
+}
+.footer-grid { overflow-wrap: break-word; }
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
+  .split-2 { grid-template-columns: 1fr; gap: 40px; }
+  .split-sidebar { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 720px) {
+  .spotlight-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) {
+  .stats-4 { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+  .gallery-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+  .form-row-2 { grid-template-columns: 1fr; }
+}
+
+/* Media elements can never exceed their container */
+img, video, iframe, canvas { max-width: 100%; }
+
 /* ── Cards ────────────────────────────────────────── */
 .card {
   background: var(--white);

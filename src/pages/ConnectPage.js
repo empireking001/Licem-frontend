@@ -253,13 +253,7 @@ const [form, setForm] = useState({
                 Tell us a little about yourself so we can serve you better.
               </p>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 14,
-                }}
-              >
+              <div className="form-row-2">
                 <div style={field}>
                   <label style={label}>First Name *</label>
                   <input
@@ -278,13 +272,7 @@ const [form, setForm] = useState({
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 14,
-                }}
-              >
+              <div className="form-row-2">
                 <div style={field}>
                   <label style={label}>Email Address *</label>
                   <input
@@ -304,13 +292,7 @@ const [form, setForm] = useState({
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 14,
-                }}
-              >
+              <div className="form-row-2">
                 <div style={field}>
                   <label style={label}>Gender</label>
                   <select
@@ -348,13 +330,7 @@ const [form, setForm] = useState({
                   placeholder="Your home address"
                 />
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 14,
-                }}
-              >
+              <div className="form-row-2">
                 <div style={field}>
                   <label style={label}>Birthday Day</label>
                   <select

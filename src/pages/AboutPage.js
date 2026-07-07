@@ -18,7 +18,7 @@ const BELIEFS = [
 ];
 
 export default function AboutPage() {
-  const { showToast, pageTopPadding } = useApp();
+  const { showToast, pageTopPadding, setPage } = useApp();
 
   return (
     <div style={{ paddingTop: 70 }}>
@@ -27,7 +27,7 @@ export default function AboutPage() {
       {/* Mission & Vision */}
       <section className="section" style={{ background: 'var(--white)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+          <div className="split-2">
             <div className="animate-left">
               <span className="eyebrow" style={{ display: 'block', marginBottom: 14 }}>MISSION & VISION</span>
               <h2 style={{ marginBottom: 20 }}>Why We Exist</h2>
@@ -111,7 +111,7 @@ export default function AboutPage() {
       {/* Stats */}
       <section className="section-sm" style={{ background: 'linear-gradient(135deg, var(--forest) 0%, var(--forest-light) 100%)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 32, textAlign: 'center' }}>
+          <div className="stats-4" style={{ textAlign: 'center' }}>
             {[['20+', 'Years of Ministry'], ['12K+', 'Church Members'], ['5', 'Campuses'], ['47', 'Nations Reached']].map(([n, l]) => (
               <div key={l}>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: 48, color: 'var(--gold-light)', fontWeight: 700, lineHeight: 1 }}>{n}</div>
