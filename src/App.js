@@ -31,7 +31,21 @@ function Router() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
-  if (page === "admin") return <AdminApp />;
+  // Check URL path for /admin route
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === "/admin" || path === "/admin/") {
+      window.history.replaceState({}, "", "/admin");
+    }
+  }, []);
+
+  // Admin is only accessible via /admin URL path
+const isAdminPath =
+  window.location.pathname.startsWith("/admin") ||
+  window.location.pathname.startsWith("/licem-control-2026");
+  if (isAdminPath || page === "admin") {
+    return <AdminApp />;
+  }
 
   const publicPages = {
     home: <HomePage />,
@@ -39,46 +53,36 @@ function Router() {
     sermons: <SermonsPage />,
     events: <EventsPage />,
     gallery: <GalleryPage />,
+    prayer: <PrayerWallPage />,
     blog: <BlogPage />,
     give: <GivePage />,
     contact: <ContactPage />,
     radio: <RadioPage />,
-    prayer: <PrayerWallPage />,
     testimonies: <TestimoniesPage />,
-    connect: <Connectpage />,
-    announcements: <AdminAnnouncements />,
+    connect: <ConnectPage />,
   };
 
   return (
-    // <div
-    //   style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
-    // >
-    //   <PublicNav />
-    //   <AnnouncementBar />
-    //   <main style={{ flex: 1 }}>{publicPages[page] || <HomePage />}</main>
-    //   <Footer />
-    //   <FloatingActions />
-    //   <ToastDisplay />
-    // </div>
-    
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 200,
-    }}>
-      <AnnouncementBar />
-      <PublicNav />
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 200,
+        }}
+      >
+        <AnnouncementBar />
+        <PublicNav />
+      </div>
+      <main style={{ flex: 1 }}>{publicPages[page] || <HomePage />}</main>
+      <Footer />
+      <FloatingActions />
+      <ToastDisplay />
     </div>
-    <main style={{ flex: 1 }}>
-      {publicPages[page] || <HomePage />}
-    </main>
-    <Footer />
-    <FloatingActions />
-    <ToastDisplay />
-  </div>
   );
 }
 

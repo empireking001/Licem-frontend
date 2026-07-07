@@ -140,23 +140,83 @@ function AdminHeader({ active, user, onViewSite }) {
   const { dark, setDark } = useApp();
   const label = MENU.find(m => m.key === active)?.label || 'Dashboard';
   return (
-    <header style={{ background: 'var(--white)', borderBottom: '1px solid var(--gray-light)', padding: '0 28px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+    <header
+      style={{
+        background: "var(--white)",
+        borderBottom: "1px solid var(--gray-light)",
+        padding: "0 28px",
+        height: 64,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexShrink: 0,
+      }}
+    >
       <div>
         <h2 style={{ fontSize: 19, margin: 0 }}>{label}</h2>
-        <div style={{ fontSize: 12, color: 'var(--gray-soft)', marginTop: 2 }}>LICEM Church Administration</div>
+        <div style={{ fontSize: 12, color: "var(--gray-soft)", marginTop: 2 }}>
+          LICEM Church Administration
+        </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <button className="btn btn-ghost btn-sm" onClick={onViewSite}><Icon name="globe" size={14} /> View Site</button>
-        <button onClick={() => setDark(!dark)} style={{ background: 'var(--gray-pale)', border: '1px solid var(--gray-light)', borderRadius: 8, padding: '8px 10px', cursor: 'pointer', color: 'var(--gray-dark)', display: 'flex', alignItems: 'center' }}>
-          <Icon name={dark ? 'sun' : 'moon'} size={15} />
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <button
+          className="btn btn-ghost btn-sm"
+          onClick={() => (window.location.href = "/")}
+        >
+          <Icon name="globe" size={14} /> View Site
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 9, paddingLeft: 10, borderLeft: '1px solid var(--gray-light)' }}>
-          <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg, var(--forest), var(--gold-bright))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 12, fontWeight: 700 }}>
-            {user?.name?.split(' ').slice(0, 2).map(n => n[0]).join('') || 'AD'}
+        <button
+          onClick={() => setDark(!dark)}
+          style={{
+            background: "var(--gray-pale)",
+            border: "1px solid var(--gray-light)",
+            borderRadius: 8,
+            padding: "8px 10px",
+            cursor: "pointer",
+            color: "var(--gray-dark)",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Icon name={dark ? "sun" : "moon"} size={15} />
+        </button>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+            paddingLeft: 10,
+            borderLeft: "1px solid var(--gray-light)",
+          }}
+        >
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: "50%",
+              background:
+                "linear-gradient(135deg, var(--forest), var(--gold-bright))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            {user?.name
+              ?.split(" ")
+              .slice(0, 2)
+              .map((n) => n[0])
+              .join("") || "AD"}
           </div>
           <div className="desktop-only">
-            <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.2 }}>{user?.name}</div>
-            <div style={{ fontSize: 11, color: 'var(--gray-soft)' }}>{user?.role}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.2 }}>
+              {user?.name}
+            </div>
+            <div style={{ fontSize: 11, color: "var(--gray-soft)" }}>
+              {user?.role}
+            </div>
           </div>
         </div>
       </div>

@@ -195,12 +195,6 @@ export default function PublicNav() {
             <Icon name={dark ? "sun" : "moon"} size={16} />
           </button>
           <button
-            className="btn btn-gold btn-sm desktop-only"
-            onClick={() => setPage("admin")}
-          >
-            Admin Portal
-          </button>
-          <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="mobile-only"
             style={{
@@ -250,16 +244,6 @@ export default function PublicNav() {
               {l.label}
             </button>
           ))}
-          <button
-            className="btn btn-primary btn-full"
-            style={{ marginTop: 16 }}
-            onClick={() => {
-              setPage("admin");
-              setMenuOpen(false);
-            }}
-          >
-            Admin Portal
-          </button>
         </div>
       )}
     </header>

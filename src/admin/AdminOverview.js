@@ -57,7 +57,7 @@ export default function AdminOverview({ setActive }) {
       <div style={{ background: 'linear-gradient(135deg, var(--forest), var(--forest-mid))', borderRadius: 'var(--radius-lg)', padding: '24px 32px', marginBottom: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div>
           <h2 style={{ color: 'white', fontSize: 24, marginBottom: 6 }}>Welcome back 🙏</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15 }}>Here's what's happening at GraceLife today.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15 }}>Here's what's happening at Licem today.</p>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button className="btn btn-sm" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.3)' }} onClick={() => setActive('sermons')}>

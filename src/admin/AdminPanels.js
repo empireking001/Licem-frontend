@@ -1742,7 +1742,7 @@ export function AdminSettings() {
                       {s?.faviconEmoji || "✝️"}
                     </span>
                     <span style={{ fontWeight: 500 }}>
-                      {s?.siteName || "GraceLife Church"}
+                      {s?.siteName || "Licem Church"}
                     </span>
                     <span style={{ color: "#999", marginLeft: 8 }}>×</span>
                   </div>
@@ -2338,7 +2338,7 @@ export function AdminSettings() {
                     {s?.metaTitle || s?.siteName}
                   </div>
                   <div style={{ fontSize: 13, color: "#006621", marginTop: 2 }}>
-                    gracelifechurch.org
+                    licem.org
                   </div>
                   <div
                     style={{

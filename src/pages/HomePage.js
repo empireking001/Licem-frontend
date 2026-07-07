@@ -168,7 +168,7 @@ export default function HomePage() {
               lineHeight: 1.75,
             }}
           >
-            {settings?.tagline || "GraceLife Church"} — a place of worship,
+            {settings?.tagline || "Licem Church"} — a place of worship,
             growth, and belonging. Join thousands experiencing God's grace every
             week.
           </p>
