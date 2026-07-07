@@ -10,7 +10,7 @@ import AdminConnectManager from './AdminConnectManager';
 import TestimonyManager from './TestimonyManager';
 import {
   AdminComments,
-  AdminContactMessages
+  AdminContactMessages,
   AdminDonations,
   AdminUsers,
   AdminMedia,
