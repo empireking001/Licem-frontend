@@ -25,10 +25,11 @@ export default function HomePage() {
   return (
     <div>
       {/* ── HERO ─────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────── */}
       <section
+        className="hero-responsive-section" /* 👈 Added a className here to hook into CSS */
         style={{
           position: "relative",
-          minHeight: "100vh",
           display: "flex",
           alignItems: "center",
           overflow: "hidden",
@@ -52,6 +53,31 @@ export default function HomePage() {
               "linear-gradient(160deg, rgba(27,67,50,0.5) 0%, rgba(10,10,20,0.4) 100%)",
           }}
         />
+
+        {/* Global Styles for Mobile Responsiveness */}
+        <style>{`
+          /* Desktop default */
+          .hero-responsive-section {
+            min-height: 100vh;
+          }
+
+          /* Mobile adjustments (Screens smaller than 768px) */
+          @media (max-width: 768px) {
+            .hero-responsive-section {
+              min-height: 60vh !important; /* Reduces the height so the image shrinks down nicely */
+              padding-bottom: 40px;
+            }
+            .hero-responsive-section .container {
+              padding-top: 60px !important; /* Prevents text from pushing past the image limits */
+            }
+          }
+
+          /* Scroll indicator bounce animation */
+          @keyframes bounce { 
+            0%,100%{transform:translateX(-50%) translateY(0)} 
+            50%{transform:translateX(-50%) translateY(8px)} 
+          }
+        `}</style>
 
         {/* Floating orbs */}
         <div
