@@ -214,6 +214,16 @@ a:hover { color: var(--forest-mid); }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .container, .container-sm, .container-lg { padding: 0 16px; }
 }
+@media (max-width: 767px) {
+  .hero-service-badge {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 80px auto 20px auto; /* Pushes it down safely below the header */
+    display: flex;
+    width: max-content;
+  }
+}
 
 /* ── Responsive page layouts ──────────────────────────
    Media-query-aware replacements for the inline-style grids
