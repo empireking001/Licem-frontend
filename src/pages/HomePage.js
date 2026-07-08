@@ -627,13 +627,7 @@ export default function HomePage() {
             <h2>Photo Gallery</h2>
             <p>Glimpses of life and faith in our community</p>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 12,
-            }}
-          >
+          <div className="gallery-4">
             {[
               "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&q=80",
               "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80",
@@ -696,11 +690,8 @@ export default function HomePage() {
               <h2>Face of the Week</h2>
             </div>
             <div
+              className="spotlight-grid"
               style={{
-                display: "grid",
-                gridTemplateColumns: "280px 1fr",
-                gap: 48,
-                alignItems: "center",
                 background: "var(--gray-ghost)",
                 borderRadius: 24,
                 overflow: "hidden",

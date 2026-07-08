@@ -6,6 +6,7 @@ import {
   usersAPI,
   mediaAPI,
   settingsAPI,
+  contactAPI,
 } from "../api";
 import {
   Icon,
@@ -2938,48 +2939,37 @@ export function AdminContactMessages() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/contact', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
-        },
-      });
-      const data = await res.json();
-      setMessages(Array.isArray(data) ? data : []);
+      const res = await contactAPI.getAll();
+      setMessages(Array.isArray(res.data) ? res.data : []);
     } catch {
       setMessages([]);
     }
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const markRead = async (id) => {
     try {
-      await fetch(`/api/contact/${id}/read`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
-        },
-      });
-      setMessages(m => m.map(x => x._id === id ? { ...x, read: true } : x));
+      await contactAPI.markRead(id);
+      setMessages((m) =>
+        m.map((x) => (x._id === id ? { ...x, read: true } : x)),
+      );
     } catch {
-      showToast('Error.', 'error');
+      showToast("Error.", "error");
     }
   };
 
   const del = async () => {
     try {
-      await fetch(`/api/contact/${confirm.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('gl_token')}`,
-        },
-      });
-      setMessages(m => m.filter(x => x._id !== confirm.id));
+      await contactAPI.delete(confirm.id);
+      setMessages((m) => m.filter((x) => x._id !== confirm.id));
       if (selected?._id === confirm.id) setSelected(null);
-      showToast('Message deleted.');
+      showToast("Message deleted.");
     } catch {
-      showToast('Error.', 'error');
+      showToast("Error.", "error");
     }
     setConfirm(null);
   };

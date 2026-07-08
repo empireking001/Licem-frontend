@@ -104,6 +104,12 @@ export const settingsAPI = {
   update: (data) => API.put("/settings", data),
 };
 
+export const contactAPI = {
+  getAll: () => API.get("/contact"),
+  markRead: (id) => API.put(`/contact/${id}/read`),
+  delete: (id) => API.delete(`/contact/${id}`),
+};
+
 export const mediaAPI = {
   getAll: () => API.get("/media"),
   upload: (formData) =>

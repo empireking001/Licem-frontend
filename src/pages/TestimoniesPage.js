@@ -78,14 +78,7 @@ export default function TestimoniesPage() {
 
       <section style={{ padding: "56px 0", background: "var(--cream)" }}>
         <div className="container" style={{ maxWidth: 1100 }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1.6fr",
-              gap: 40,
-              alignItems: "start",
-            }}
-          >
+          <div className="split-sidebar">
             {/* SUBMIT FORM */}
             <div style={{ position: "sticky", top: 90 }}>
               <div className="card" style={{ padding: 28 }}>

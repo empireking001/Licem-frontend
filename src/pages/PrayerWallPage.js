@@ -105,14 +105,7 @@ export default function PrayerWallPage() {
 
       <section style={{ padding: "56px 0", background: "var(--cream)" }}>
         <div className="container" style={{ maxWidth: 1100 }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1.7fr",
-              gap: 40,
-              alignItems: "start",
-            }}
-          >
+          <div className="split-sidebar">
             {/* FORM */}
             <div style={{ position: "sticky", top: 90 }}>
               <div className="card" style={{ padding: 28 }}>
@@ -224,7 +217,7 @@ export default function PrayerWallPage() {
                 style={{
                   marginTop: 16,
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
                   gap: 12,
                 }}
               >
