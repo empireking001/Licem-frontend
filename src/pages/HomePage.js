@@ -38,10 +38,10 @@ export default function HomePage() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url(${settings?.heroImageUrl || "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1920&q=80"})`,
+            backgroundImage: `url(${settings?.heroImageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt8QaD-VbBOC8ojk5BPYdNBfKOw-sZlVie5CMgE8NtlQ&s=10"})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "brightness(0.3)",
+            filter: "brightness(0.7)",
           }}
         />
         <div
@@ -49,7 +49,7 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(160deg, rgba(27,67,50,0.7) 0%, rgba(10,10,20,0.5) 100%)",
+              "linear-gradient(160deg, rgba(27,67,50,0.3) 0%, rgba(10,10,20,0.2) 100%)",
           }}
         />
 
@@ -168,9 +168,8 @@ export default function HomePage() {
               lineHeight: 1.75,
             }}
           >
-            {settings?.tagline || "Licem Church"} — a place of worship,
-            growth, and belonging. Join thousands experiencing God's grace every
-            week.
+            {settings?.tagline || "Licem Church"} — a place of worship, growth,
+            and belonging. Join thousands experiencing God's grace every week.
           </p>
 
           <div

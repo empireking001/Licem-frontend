@@ -5,7 +5,7 @@ const TEAM = [
   {
     name: "Rev. Oluwaseye Oduwale",
     role: "LICEM General Overseer Worldwide",
-    img: "https://licem.org/wp-content/uploads/2023/06/oluwaseye-oduwale.jpg",
+    img: "https://licem.org/wp-content/uploads/2022/10/WhatsApp-Image-2022-09-18-at-6.18.30-PM.jpeg",
     bio: "Leading GraceLife for over 20 years with a passion for biblical teaching and community transformation.",
   },
   {
@@ -56,7 +56,7 @@ export default function AboutPage() {
     <div style={{ paddingTop: 70 }}>
       <PageBanner
         eyebrow="OUR STORY"
-        title="About GraceLife Church"
+        title="About LICEM Church"
         subtitle="The Living Christ Evangelical Ministry commenced full operation in June 1990.
 
 The ministry started in the early part of 1973 as a group of men and women with a shared vision of soul-winning. As received by the set man, Bishop Oluwayimika Oduwale, they were to organise evangelical crusades and outreaches in rural and urban places.."
