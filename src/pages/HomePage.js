@@ -49,7 +49,7 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(160deg, rgba(27,67,50,0.3) 0%, rgba(10,10,20,0.2) 100%)",
+              "linear-gradient(160deg, rgba(27,67,50,0.5) 0%, rgba(10,10,20,0.4) 100%)",
           }}
         />
 
