@@ -12,7 +12,16 @@ export default function HomePage() {
   const [subDone, setSubDone]   = useState(false);
   const [loading, setLoading]   = useState(true);
 
+  // 1. Mobile layout layout-detection state
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
+    // Check screen size on client mounting & resize events
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    
+    // Fetch background API Data
     Promise.all([
       sermonsAPI.getAll({ limit: 3 }),
       eventsAPI.getAll({ upcoming: true }),
@@ -20,14 +29,15 @@ export default function HomePage() {
       setSermons(s.data.sermons || []);
       setEvents((e.data || []).slice(0, 4));
     }).catch(() => {}).finally(() => setLoading(false));
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <div>
       {/* ── HERO ─────────────────────────────────── */}
-      {/* ── HERO ─────────────────────────────────── */}
       <section
-        className="hero-responsive-section" /* 👈 Added a className here to hook into CSS */
+        className="hero-responsive-section"
         style={{
           position: "relative",
           display: "flex",
@@ -64,11 +74,11 @@ export default function HomePage() {
           /* Mobile adjustments (Screens smaller than 768px) */
           @media (max-width: 768px) {
             .hero-responsive-section {
-              min-height: 60vh !important; /* Reduces the height so the image shrinks down nicely */
+              min-height: 60vh !important; 
               padding-bottom: 40px;
             }
             .hero-responsive-section .container {
-              padding-top: 60px !important; /* Prevents text from pushing past the image limits */
+              padding-top: 60px !important; 
             }
           }
 
@@ -113,7 +123,7 @@ export default function HomePage() {
             position: "relative",
             zIndex: 1,
             textAlign: "center",
-            paddingTop: 100,
+            paddingTop: isMobile ? 120 : 100, // Safe padding away from absolute navigation menu
           }}
         >
           {/* Live chip */}
@@ -143,6 +153,8 @@ export default function HomePage() {
               </span>
             </div>
           )}
+          
+          {/* 2. ADJUSTED BADGE COMPONENT FOR MOBILE SWITCHING */}
           {!settings?.liveIsActive && (
             <div
               style={{
@@ -153,6 +165,7 @@ export default function HomePage() {
                 border: "1px solid rgba(201,149,58,0.35)",
                 borderRadius: 40,
                 padding: "8px 20px",
+                marginTop: isMobile ? 20 : 0, // Adds separation on mobile from navigation
                 marginBottom: 28,
               }}
             >
@@ -176,6 +189,7 @@ export default function HomePage() {
               fontStyle: "italic",
               letterSpacing: "-0.5px",
               marginBottom: 22,
+              fontSize: isMobile ? "2rem" : "3.5rem", // Shrinks font on smaller mobile screens
               textShadow: "0 2px 20px rgba(0,0,0,0.3)",
             }}
           >
@@ -190,7 +204,7 @@ export default function HomePage() {
               color: "rgba(255,255,255,0.78)",
               maxWidth: 540,
               margin: "0 auto 44px",
-              fontSize: 18,
+              fontSize: isMobile ? 15 : 18, // Clean readability adjustments
               lineHeight: 1.75,
             }}
           >
@@ -304,7 +318,6 @@ export default function HomePage() {
         >
           <Icon name="chevDown" size={22} color="rgba(255,255,255,0.4)" />
         </div>
-        <style>{`@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }`}</style>
       </section>
 
       {/* ── UPCOMING EVENTS ──────────────────────── */}
