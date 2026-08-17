@@ -66,19 +66,53 @@ export default function HomePage() {
 
         {/* Global Styles for Mobile Responsiveness */}
         <style>{`
-          /* Desktop default */
           .hero-responsive-section {
-            min-height: 100vh;
+            min-height: min(900px, calc(100svh - 70px));
+            padding: clamp(120px, 16vh, 180px) 0 56px;
           }
 
-          /* Mobile adjustments (Screens smaller than 768px) */
+          .hero-service-times {
+            margin-top: 56px;
+            padding-top: 28px;
+          }
+
           @media (max-width: 768px) {
             .hero-responsive-section {
-              min-height: 60vh !important; 
-              padding-bottom: 40px;
+              min-height: auto;
+              padding: 132px 0 40px;
             }
             .hero-responsive-section .container {
-              padding-top: 60px !important; 
+              padding-top: 0 !important;
+            }
+            .hero-responsive-section h1 {
+              font-size: clamp(2rem, 9vw, 2.75rem) !important;
+              line-height: 1.08 !important;
+              margin-bottom: 18px !important;
+            }
+            .hero-responsive-section p {
+              max-width: 34rem !important;
+              font-size: 15px !important;
+              line-height: 1.6 !important;
+              margin-bottom: 28px !important;
+            }
+            .hero-service-times {
+              margin-top: 36px !important;
+              padding-top: 24px !important;
+              gap: 10px !important;
+            }
+            .hero-service-times > div {
+              flex: 1 1 100%;
+              max-width: 20rem;
+            }
+          }
+
+          @media (max-width: 420px) {
+            .hero-responsive-section {
+              padding-top: 124px;
+            }
+            .hero-responsive-section .btn-xl {
+              width: 100%;
+              max-width: 18rem;
             }
           }
 
@@ -123,7 +157,7 @@ export default function HomePage() {
             position: "relative",
             zIndex: 1,
             textAlign: "center",
-            paddingTop: isMobile ? 120 : 100, // Safe padding away from absolute navigation menu
+            paddingTop: 0,
           }}
         >
           {/* Live chip */}
@@ -241,9 +275,10 @@ export default function HomePage() {
 
           {/* Service Times Banner */}
           <div
+            className="hero-service-times"
             style={{
-              marginTop: 64,
-              paddingTop: 40,
+              marginTop: 56,
+              paddingTop: 28,
               borderTop: "1px solid rgba(255,255,255,0.12)",
               display: "flex",
               justifyContent: "center",

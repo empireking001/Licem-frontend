@@ -41,7 +41,7 @@ const MENU = [
 /* ── LOGIN ─────────────────────────────────────────── */
 function AdminLogin() {
   const { login } = useApp();
-  const [email,    setEmail]    = useState('pastor@gracelife.org');
+  const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState('');
@@ -75,9 +75,6 @@ function AdminLogin() {
           <button className="btn btn-primary btn-full btn-lg" style={{ justifyContent: 'center' }} onClick={handleLogin} disabled={loading}>
             {loading ? <Spinner size={18} color="white" /> : <><Icon name="lock" size={17} /> Sign In to Dashboard</>}
           </button>
-          <div style={{ marginTop: 20, padding: '14px 16px', background: 'var(--gray-ghost)', borderRadius: 9, fontSize: 13, color: 'var(--gray-mid)' }}>
-            <strong>Demo:</strong> pastor@gracelife.org / admin123
-          </div>
         </div>
       </div>
     </div>

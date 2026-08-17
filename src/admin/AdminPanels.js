@@ -7,6 +7,7 @@ import {
   mediaAPI,
   settingsAPI,
   contactAPI,
+  resolveMediaUrl,
 } from "../api";
 import {
   Icon,
@@ -798,7 +799,7 @@ export function AdminMedia() {
   };
 
   const copyUrl = (url) => {
-    const full = url.startsWith("/") ? `http://localhost:5000${url}` : url;
+    const full = resolveMediaUrl(url);
     navigator.clipboard.writeText(full).then(() => showToast("URL copied!"));
   };
 
@@ -903,7 +904,7 @@ export function AdminMedia() {
         >
           {files.map((f) => {
             const url = f.url?.startsWith("/")
-              ? `http://localhost:5000${f.url}`
+              ? resolveMediaUrl(f.url)
               : f.url;
             const isImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(f.filename);
             return (
@@ -994,7 +995,7 @@ export function AdminMedia() {
             <tbody>
               {files.map((f) => {
                 const url = f.url?.startsWith("/")
-                  ? `http://localhost:5000${f.url}`
+                  ? resolveMediaUrl(f.url)
                   : f.url;
                 const isImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(f.filename);
                 return (
@@ -1498,7 +1499,7 @@ export function AdminSettings() {
                               const data = await res.json();
                               if (data.files && data.files[0]) {
                                 const url = data.files[0].url.startsWith("/")
-                                  ? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}${data.files[0].url}`
+                                  ? resolveMediaUrl(data.files[0].url)
                                   : data.files[0].url;
                                 U("faceOfWeekImage", url);
                               }
@@ -1907,9 +1908,8 @@ export function AdminSettings() {
                             });
                             const data = await res.json();
                             if (data.files && data.files[0]) {
-                              const url = data.files[0].url.startsWith("/")
-                                ? `http://localhost:5000${data.files[0].url}`
-                                : data.files[0].url;
+                                                              const url = resolveMediaUrl(data.files[0].url);
+
                               U("heroImageUrl", url);
                             }
                           } catch {

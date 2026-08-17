@@ -27,7 +27,42 @@ export default function AppProvider({ children }) {
   const [announcementHeight, setAnnouncementHeight] = useState(42);
 
   const pageTopPadding = announcementVisible ? 70 + announcementHeight : 70;
-  const [page, setPage] = useState("home");
+  const PATH_TO_PAGE = {
+    "/": "home",
+    "/about": "about",
+    "/sermons": "sermons",
+    "/events": "events",
+    "/gallery": "gallery",
+    "/radio": "radio",
+    "/prayer-wall": "prayer",
+    "/blog": "blog",
+    "/give": "give",
+    "/contact": "contact",
+    "/testimonies": "testimonies",
+    "/connect": "connect",
+  };
+  const PAGE_TO_PATH = Object.fromEntries(
+    Object.entries(PATH_TO_PAGE).map(([path, pageName]) => [pageName, path]),
+  );
+  const getPageFromLocation = () => PATH_TO_PAGE[window.location.pathname] || "home";
+  const [page, setPageState] = useState(getPageFromLocation);
+
+  const setPage = useCallback((nextPage, { replace = false } = {}) => {
+    const normalizedPage = PAGE_TO_PATH[nextPage] ? nextPage : "home";
+    const nextPath = PAGE_TO_PATH[normalizedPage];
+    if (window.location.pathname !== nextPath) {
+      const method = replace ? "replaceState" : "pushState";
+      window.history[method]({ page: normalizedPage }, "", nextPath);
+    }
+    setPageState(normalizedPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => setPageState(getPageFromLocation());
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   // Dark mode
   useEffect(() => {

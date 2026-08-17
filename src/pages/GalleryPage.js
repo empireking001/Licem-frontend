@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { galleryAPI } from "../api";
+import { galleryAPI, resolveMediaUrl } from "../api";
 import { Icon, Spinner, PageBanner, EmptyState } from "../components/UI";
 import { useApp } from '../context/AppContext';
 
@@ -164,7 +164,7 @@ export default function GalleryPage() {
                     <div
                       className="aspect-square"
                       style={{
-                        backgroundImage: `url(${img.url.startsWith("/") ? `http://localhost:5000${img.url}` : img.url})`,
+                        backgroundImage: `url(${resolveMediaUrl(img.url)})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         cursor: "zoom-in",
@@ -202,14 +202,8 @@ export default function GalleryPage() {
                       </span>
 
                       <a
-                        href={
-                          img.url.startsWith("/")
-                            ? `http://localhost:5000${img.url}`
-                            : img.url
-                        }
+                        href={galleryAPI.downloadImageUrl(selected._id, img._id)}
                         download={img.filename || "photo.jpg"}
-                        target="_blank"
-                        rel="noreferrer"
                         onClick={(e) => e.stopPropagation()}
                         title="Download photo"
                         style={{
@@ -285,11 +279,8 @@ export default function GalleryPage() {
               }}
             >
               <img
-                src={
-                  lightbox.images[lightbox.index].url.startsWith("/")
-                    ? `http://localhost:5000${lightbox.images[lightbox.index].url}`
-                    : lightbox.images[lightbox.index].url
-                }
+                                  src={resolveMediaUrl(lightbox.images[lightbox.index].url)}
+
                 alt={lightbox.images[lightbox.index].caption || ""}
                 style={{
                   maxWidth: "100%",
@@ -325,16 +316,10 @@ export default function GalleryPage() {
                 </span>
 
                 <a
-                  href={
-                    lightbox.images[lightbox.index].url.startsWith("/")
-                      ? `http://localhost:5000${lightbox.images[lightbox.index].url}`
-                      : lightbox.images[lightbox.index].url
-                  }
+                  href={galleryAPI.downloadImageUrl(selected._id, lightbox.images[lightbox.index]._id)}
                   download={
                     lightbox.images[lightbox.index].filename || "photo.jpg"
                   }
-                  target="_blank"
-                  rel="noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   style={{
                     display: "inline-flex",
@@ -511,8 +496,8 @@ export default function GalleryPage() {
                       <img
                         src={
                           album.coverImage.startsWith("/")
-                            ? `http://localhost:5000${album.coverImage}`
-                            : album.coverImage
+                            ? resolveMediaUrl(album.coverImage)
+                            : resolveMediaUrl(album.coverImage)
                         }
                         alt={album.title}
                         className="img-cover"

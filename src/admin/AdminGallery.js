@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { galleryAPI } from '../api';
+import { galleryAPI, resolveMediaUrl } from '../api';
 import { Icon, Spinner, Modal, ConfirmModal, EmptyState } from '../components/UI';
 import { useApp } from '../context/AppContext';
 
@@ -103,7 +103,7 @@ export default function AdminGallery() {
     } catch { showToast('Error.', 'error'); }
   };
 
-  const imgSrc = url => url?.startsWith('/') ? `http://localhost:5000${url}` : url;
+  const imgSrc = resolveMediaUrl;
 
   /* ── Album detail ──────────────────────────────── */
   if (selected) return (

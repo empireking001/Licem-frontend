@@ -1,10 +1,18 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL
-    ? `${process.env.REACT_APP_API_URL}/api`
-    : "/api",
-});
+export const API_ORIGIN = process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://licem-backend.onrender.com"
+    : "http://localhost:5000");
+export const API_BASE_URL = `${API_ORIGIN}/api`;
+
+export const resolveMediaUrl = (value) => {
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  return `${API_ORIGIN}${value.startsWith("/") ? value : `/${value}`}`;
+};
+
+const API = axios.create({ baseURL: API_BASE_URL });
 
 // Attach token automatically
 API.interceptors.request.use((config) => {
@@ -90,6 +98,8 @@ export const galleryAPI = {
     API.put(`/gallery/${albumId}/images/${imgId}`, data),
   deleteImage: (albumId, imgId) =>
     API.delete(`/gallery/${albumId}/images/${imgId}`),
+  downloadImageUrl: (albumId, imgId) =>
+    `${API_BASE_URL}/gallery/download/${albumId}/${imgId}`,
 };
 
 export const usersAPI = {
