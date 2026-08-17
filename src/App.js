@@ -28,7 +28,7 @@ function Router() {
   const { page } = useApp();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [page]);
 
   // Check URL path for /admin route

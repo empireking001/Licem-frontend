@@ -205,13 +205,15 @@ export default function GalleryPage() {
                         href={galleryAPI.downloadImageUrl(selected._id, img._id)}
                         download={img.filename || "photo.jpg"}
                         onClick={(e) => e.stopPropagation()}
+                        aria-label={`Download ${img.filename || "photo"}`}
                         title="Download photo"
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          width: 30,
-                          height: 30,
+                          minWidth: 108,
+                          height: 34,
+                          padding: "0 10px",
                           borderRadius: 8,
                           background: "var(--forest-pale)",
                           color: "var(--forest)",
@@ -231,7 +233,8 @@ export default function GalleryPage() {
                           e.currentTarget.style.color = "var(--forest)";
                         }}
                       >
-                        ⬇
+                        <Icon name="download" size={14} />
+                        <span style={{ fontSize: 12, fontWeight: 600 }}>Download</span>
                       </a>
                     </div>
                   </div>
@@ -324,8 +327,8 @@ export default function GalleryPage() {
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 6,
-                    padding: "7px 16px",
+                    gap: 7,
+                    padding: "8px 16px",
                     borderRadius: 20,
                     background: "rgba(255,255,255,0.15)",
                     border: "1px solid rgba(255,255,255,0.25)",
@@ -340,13 +343,15 @@ export default function GalleryPage() {
                     (e.currentTarget.style.background =
                       "rgba(255,255,255,0.25)")
                   }
-                  onMouseOut={(e) =>
+                                    onMouseOut={(e) =>
                     (e.currentTarget.style.background =
                       "rgba(255,255,255,0.15)")
                   }
                 >
-                  ⬇ Download Photo
+                  <Icon name="download" size={14} />
+                  Download
                 </a>
+
               </div>
             </div>
 

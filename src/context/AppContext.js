@@ -55,7 +55,7 @@ export default function AppProvider({ children }) {
       window.history[method]({ page: normalizedPage }, "", nextPath);
     }
     setPageState(normalizedPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
 
   useEffect(() => {
