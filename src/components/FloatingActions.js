@@ -7,7 +7,7 @@ export default function FloatingActions() {
 
   const phone = settings?.whatsappNumber || "";
   const message = encodeURIComponent(
-    `Hello! I found your church website and would like to connect with ${settings?.siteName || "your church"}.`,
+    `Hello! I found the LICEM church website and would like to connect with LICEM.`,
   );
   const waUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${message}`;
 

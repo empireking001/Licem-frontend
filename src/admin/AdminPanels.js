@@ -1090,7 +1090,12 @@ export function AdminSettings() {
   const save = async () => {
     setSaving(true);
     try {
-      const r = await settingsAPI.update(s);
+      const r = await settingsAPI.update({
+        ...s,
+        siteName: "LICEM",
+        faviconType: "url",
+        faviconUrl: "/assets/licem-favicon.png",
+      });
       setS(r.data);
       setGlobalSettings(r.data);
       showToast("Settings saved successfully!");
@@ -1217,10 +1222,7 @@ export function AdminSettings() {
                 <div className="grid-2">
                   <div className="form-group">
                     <label>Church Name</label>
-                    <input
-                      value={s?.siteName || ""}
-                      onChange={(e) => U("siteName", e.target.value)}
-                    />
+                    <input value="LICEM" readOnly aria-label="Site name" />
                   </div>
                   <div className="form-group">
                     <label>Tagline</label>
@@ -1740,12 +1742,14 @@ export function AdminSettings() {
                       fontSize: 13,
                     }}
                   >
-                    <span style={{ fontSize: 15 }}>
-                      {s?.faviconEmoji || "✝️"}
-                    </span>
-                    <span style={{ fontWeight: 500 }}>
-                      {s?.siteName || "Licem Church"}
-                    </span>
+                    <img
+                      src="/assets/licem-favicon.png"
+                      alt="LICEM favicon preview"
+                      width="20"
+                      height="20"
+                      style={{ width: 20, height: 20, objectFit: "contain", borderRadius: 4, background: "#080808" }}
+                    />
+                    <span style={{ fontWeight: 500 }}>LICEM</span>
                     <span style={{ color: "#999", marginLeft: 8 }}>×</span>
                   </div>
                 </div>

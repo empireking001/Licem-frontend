@@ -2,7 +2,7 @@ import { useApp } from '../context/AppContext';
 
 export default function Footer() {
   const { setPage, settings } = useApp();
-  const name = settings?.siteName || 'Living Christ Evangelical Ministries';
+  const name = 'LICEM';
 
   return (
     <footer style={{ background: '#1A1A2E', color: 'rgba(255,255,255,0.75)' }}>
@@ -13,12 +13,16 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-              <div style={{
-                width: 40, height: 40, borderRadius: 10,
-                background: 'linear-gradient(135deg, var(--forest), var(--forest-mid))',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'white', fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700,
-              }}>G</div>
+              <img
+                src="/assets/licem-logo.png"
+                alt="LICEM logo"
+                width="46"
+                height="46"
+                style={{
+                  width: 46, height: 46, borderRadius: 10,
+                  objectFit: 'contain', background: '#080808', flexShrink: 0,
+                }}
+              />
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'white', fontWeight: 700 }}>{name}</div>
             </div>
             <p style={{ fontSize: 14, lineHeight: 1.8, marginBottom: 24, color: 'rgba(255,255,255,0.6)' }}>

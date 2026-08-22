@@ -30,8 +30,7 @@ export default function PublicNav() {
 
   const isHome = page === "home";
   const navBg = scrolled || menuOpen || !isHome;
-  const siteName =
-    settings?.siteName || "Living Christ Evangelical Ministries";
+  const siteName = "LICEM";
 
   return (
     // <header style={{
@@ -80,26 +79,21 @@ export default function PublicNav() {
             gap: 11,
           }}
         >
-          <div
+          <img
+            src="/assets/licem-logo.png"
+            alt="LICEM logo"
+            width="42"
+            height="42"
             style={{
-              width: 38,
-              height: 38,
+              width: 42,
+              height: 42,
               borderRadius: 10,
               flexShrink: 0,
-              background:
-                "linear-gradient(135deg, var(--forest), var(--forest-mid))",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontFamily: "var(--font-display)",
-              fontSize: 20,
-              fontWeight: 700,
+              objectFit: "contain",
+              background: "#080808",
               boxShadow: "0 2px 8px rgba(27,67,50,0.3)",
             }}
-          >
-            G
-          </div>
+          />
           <div style={{ textAlign: "left" }}>
             <div
               style={{

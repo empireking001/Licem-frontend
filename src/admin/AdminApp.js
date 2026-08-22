@@ -61,9 +61,13 @@ function AdminLogin() {
       <div style={{ width: '100%', maxWidth: 440, padding: '0 24px' }}>
         <div style={{ background: 'var(--white)', borderRadius: 24, padding: '44px 40px', boxShadow: '0 32px 80px rgba(0,0,0,0.35)' }}>
           <div style={{ textAlign: 'center', marginBottom: 36 }}>
-            <div style={{ width: 64, height: 64, borderRadius: 16, margin: '0 auto 18px', background: 'linear-gradient(135deg, var(--forest), var(--forest-mid))', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-forest)' }}>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'white', fontWeight: 700 }}>G</span>
-            </div>
+            <img
+              src="/assets/licem-logo.png"
+              alt="LICEM logo"
+              width="76"
+              height="76"
+              style={{ width: 76, height: 76, borderRadius: 16, margin: '0 auto 18px', objectFit: 'contain', background: '#080808', display: 'block', boxShadow: 'var(--shadow-forest)' }}
+            />
             <h2 style={{ fontSize: 26, marginBottom: 6 }}>Admin Dashboard</h2>
             <p style={{ color: 'var(--gray-mid)', fontSize: 14 }}>LICEM Church CMS</p>
           </div>
@@ -88,7 +92,7 @@ function Sidebar({ active, setActive, collapsed, setCollapsed, onLogout, user })
       <div style={{ padding: collapsed ? '18px 16px' : '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 10, justifyContent: collapsed ? 'center' : 'space-between', minHeight: 70 }}>
         {!collapsed && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 34, height: 34, borderRadius: 8, flexShrink: 0, background: 'linear-gradient(135deg, var(--forest), var(--forest-mid))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700 }}>G</div>
+            <img src="/assets/licem-logo.png" alt="LICEM logo" width="38" height="38" style={{ width: 38, height: 38, borderRadius: 8, flexShrink: 0, objectFit: 'contain', background: '#080808' }} />
             <div>
               <div style={{ color: 'white', fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, lineHeight: 1.1 }}>LICEM</div>
               <div style={{ fontSize: 10, color: 'var(--gold-light)', letterSpacing: 2, textTransform: 'uppercase' }}>CMS</div>

@@ -78,24 +78,17 @@ export default function AppProvider({ children }) {
       .catch(() => {});
   }, []);
 
-  // Apply favicon from settings
+  // LICEM branding is fixed across runtime settings and cannot fall back to the placeholder.
   useEffect(() => {
-    if (!settings) return;
-    let link =
+    const link =
       document.querySelector("link[rel*='icon']") ||
       document.createElement("link");
-    link.type = "image/x-icon";
-    link.rel = "shortcut icon";
-    if (settings.faviconType === "url" && settings.faviconUrl) {
-      link.href = settings.faviconUrl;
-    } else {
-      const emoji = settings.faviconEmoji || "✝️";
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">${emoji}</text></svg>`;
-      link.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
-    }
+    link.type = "image/png";
+    link.rel = "icon";
+    link.href = "/assets/licem-favicon.png";
     document.head.appendChild(link);
-    if (settings.siteName) document.title = settings.siteName;
-  }, [settings]);
+    document.title = "LICEM";
+  }, []);
 
   const showToast = useCallback((msg, type = "success") => {
     setToast({ msg, type, id: Date.now() });
