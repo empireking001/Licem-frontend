@@ -49,7 +49,7 @@ export default function Footer() {
           {/* Quick links */}
           <div>
             <div style={{ color: 'white', fontWeight: 700, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 18 }}>Navigation</div>
-            {['home','about','sermons','events','gallery','blog','give','contact'].map(p => (
+            {[['home','Home'],['about','About'],['sermons','Sermons'],['radio','Radio'],['prayer','Prayer'],['events','Events'],['give','Give'],['contact','Contact']].map(([p,label]) => (
               <button key={p} onClick={() => setPage(p)} style={{
                 display: 'block', background: 'none', border: 'none', cursor: 'pointer',
                 color: 'rgba(255,255,255,0.6)', fontSize: 14, padding: '6px 0', textAlign: 'left',
@@ -58,15 +58,15 @@ export default function Footer() {
               }}
                 onMouseOver={e => e.target.style.color = 'var(--gold-light)'}
                 onMouseOut={e => e.target.style.color = 'rgba(255,255,255,0.6)'}
-              >{p}</button>
+              >{label}</button>
             ))}
           </div>
 
-          {/* Ministries */}
+          {/* Resources */}
           <div>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 18 }}>Ministries</div>
-            {["Youth Ministry", "Women's Fellowship", "Men's Group", "Children's Church", "Choir & Worship", "Outreach"].map(m => (
-              <div key={m} style={{ fontSize: 14, padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>{m}</div>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 18 }}>Resources</div>
+            {[['books','Books'],['devotionals','Devotionals'],['blog','News & Articles'],['gallery','Gallery'],['testimonies','Testimonies']].map(([p,label]) => (
+              <button key={p} onClick={() => setPage(p)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14, padding: '6px 0', textAlign: 'left', fontFamily: 'var(--font-body)', width: '100%' }}>{label}</button>
             ))}
           </div>
 
