@@ -275,7 +275,7 @@ export default function AdminApp() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
         <AdminHeader active={active} user={user} onViewSite={() => setPage('home')} />
         <main style={{ flex: 1, overflow: 'auto' }} className="animate-fade">
-          <AdminPanelBoundary panel={active}>
+          <AdminPanelBoundary key={active} panel={active}>
             {PANELS[active] || <AdminOverview setActive={setActive} />}
           </AdminPanelBoundary>
         </main>
