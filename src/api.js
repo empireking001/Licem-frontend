@@ -57,6 +57,7 @@ export const booksAPI = {
   delete: (id) => API.delete(`/books/${id}`),
   resolveDownload: (id) => API.post(`/books/${id}/download`),
   upload: (formData) => API.post("/books/upload", formData, { headers: { "Content-Type": "multipart/form-data" } }),
+  uploadCover: (formData) => API.post("/books/cover-upload", formData, { headers: { "Content-Type": "multipart/form-data" } }),
 };
 
 export const radioAnalyticsAPI = {

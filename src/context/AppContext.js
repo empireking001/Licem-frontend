@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 import { authAPI, settingsAPI } from "../api";
 
@@ -25,6 +26,10 @@ export default function AppProvider({ children }) {
   const [toast, setToast] = useState(null);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
   const [announcementHeight, setAnnouncementHeight] = useState(42);
+  const radioAudioRef = useRef(null);
+  const [radioPlaying, setRadioPlaying] = useState(false);
+  const [radioLoading, setRadioLoading] = useState(false);
+  const [radioError, setRadioError] = useState("");
 
   const pageTopPadding = announcementVisible ? 70 + announcementHeight : 70;
   const PATH_TO_PAGE = {
@@ -37,6 +42,7 @@ export default function AppProvider({ children }) {
     "/prayer-wall": "prayer",
     "/blog": "blog",
     "/books": "books",
+    "/devotionals": "devotionals",
     "/give": "give",
     "/contact": "contact",
     "/testimonies": "testimonies",
@@ -91,6 +97,37 @@ export default function AppProvider({ children }) {
     document.title = "LICEM";
   }, []);
 
+  const startRadio = useCallback(async () => {
+    const url = settings?.radioStreamUrl || "";
+    if (!url) { setRadioError("Radio stream is not configured yet."); return false; }
+    setRadioError("");
+    setRadioLoading(true);
+    try {
+      if (!radioAudioRef.current) radioAudioRef.current = new Audio();
+      radioAudioRef.current.src = url;
+      radioAudioRef.current.preload = "none";
+      radioAudioRef.current.volume = Number(localStorage.getItem("licem_radio_volume") || 0.8);
+      await radioAudioRef.current.play();
+      setRadioPlaying(true);
+      return true;
+    } catch {
+      setRadioError("Tap Listen Live to start the stream in your browser.");
+      return false;
+    } finally { setRadioLoading(false); }
+  }, [settings]);
+
+  const stopRadio = useCallback(() => {
+    radioAudioRef.current?.pause();
+    setRadioPlaying(false);
+  }, []);
+
+  const setRadioVolume = useCallback((value) => {
+    localStorage.setItem("licem_radio_volume", String(value));
+    if (radioAudioRef.current) radioAudioRef.current.volume = value;
+  }, []);
+
+  useEffect(() => () => radioAudioRef.current?.pause(), []);
+
   const showToast = useCallback((msg, type = "success") => {
     setToast({ msg, type, id: Date.now() });
     setTimeout(() => setToast(null), 3500);
@@ -130,6 +167,12 @@ export default function AppProvider({ children }) {
         announcementHeight,
         setAnnouncementHeight,
         pageTopPadding,
+        radioPlaying,
+        radioLoading,
+        radioError,
+        startRadio,
+        stopRadio,
+        setRadioVolume,
       }}
     >
       {children}

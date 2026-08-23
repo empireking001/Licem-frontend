@@ -7,6 +7,7 @@ import AdminEvents    from './AdminEvents';
 import AdminRadio     from './AdminRadio';
 import AdminBooks     from './AdminBooks';
 import AdminDevotionals from './AdminDevotionals';
+import AdminContentHealth from './AdminContentHealth';
 import AdminBlog      from './AdminBlog';
 import AdminGallery   from './AdminGallery';
 import AdminConnectManager from './AdminConnectManager';
@@ -24,6 +25,7 @@ import {
 
 const MENU = [
   { key: "overview", label: "Overview", icon: "activity" },
+  { key: "health", label: "Content Health", icon: "check" },
   { key: "sermons", label: "Sermons", icon: "video" },
   { key: "events", label: "Events", icon: "calendar" },
   { key: "radio", label: "Radio Management", icon: "music" },
@@ -243,6 +245,7 @@ export default function AdminApp() {
 
   const PANELS = {
     overview: <AdminOverview setActive={setActive} />,
+    health: <AdminContentHealth />,
     sermons: <AdminSermons />,
     events: <AdminEvents />,
     radio: <AdminRadio />,

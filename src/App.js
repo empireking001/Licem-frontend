@@ -21,6 +21,7 @@ import TestimoniesPage from "./pages/TestimoniesPage";
 import ConnectPage from "./pages/ConnectPage";
 import RadioPage from "./pages/RadioPage";
 import BooksPage from "./pages/BooksPage";
+import PersistentRadioPlayer from "./components/PersistentRadioPlayer";
 
 // Admin
 import AdminApp from "./admin/AdminApp";
@@ -60,6 +61,7 @@ const isAdminPath =
     contact: <ContactPage />,
     radio: <RadioPage />,
     books: <BooksPage />,
+    devotionals: <BlogPage />,
     testimonies: <TestimoniesPage />,
     connect: <ConnectPage />,
   };
@@ -81,6 +83,7 @@ const isAdminPath =
         <PublicNav />
       </div>
       <main style={{ flex: 1 }}>{publicPages[page] || <HomePage />}</main>
+      <PersistentRadioPlayer />
       <Footer />
       <FloatingActions />
       <ToastDisplay />

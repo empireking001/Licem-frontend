@@ -10,6 +10,7 @@ export default function AdminRadio() {
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
   const [analytics, setAnalytics] = useState(null);
+  const [scheduleDraft, setScheduleDraft] = useState({ title: "", type: "Teaching", start: "08:00", duration: 20, enabled: true });
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function AdminRadio() {
   }, [showToast]);
 
   const update = (key, value) => setSettings((current) => ({ ...current, [key]: value }));
+  const addScheduleItem = () => { if (!scheduleDraft.title.trim()) return showToast("Add a programme title first.", "error"); update("radioSchedule", [...(settings.radioSchedule || []), { ...scheduleDraft, title: scheduleDraft.title.trim() }]); setScheduleDraft({ title: "", type: "Teaching", start: "08:00", duration: 20, enabled: true }); };
+  const removeScheduleItem = (index) => update("radioSchedule", (settings.radioSchedule || []).filter((_, itemIndex) => itemIndex !== index));
 
   useEffect(() => {
     const loadAnalytics = () => radioAnalyticsAPI.summary().then((response) => setAnalytics(response.data)).catch(() => {});
@@ -114,12 +117,15 @@ export default function AdminRadio() {
         <div className="grid-2">
           <div className="form-group"><label>Radio Station Name</label><input value={settings.radioName || ""} onChange={(event) => update("radioName", event.target.value)} placeholder="LICEM Radio" /></div>
           <div className="form-group"><label>Direct Stream URL</label><input type="url" value={settings.radioStreamUrl || ""} onChange={(event) => update("radioStreamUrl", event.target.value)} placeholder="https://…/stream.mp3" /></div>
+          <div className="form-group"><label>Now Playing Label</label><input value={settings.radioNowPlaying || ""} onChange={(event) => update("radioNowPlaying", event.target.value)} placeholder="Morning Prayer & Teaching" /></div>
         </div>
         <div style={{ marginTop: 16, padding: "14px 16px", borderRadius: 10, background: settings.radioIsLive ? "var(--danger-pale)" : "var(--gray-ghost)", display: "flex", alignItems: "center", gap: 12 }}>
           <button type="button" aria-pressed={Boolean(settings.radioIsLive)} className={`toggle ${settings.radioIsLive ? "on" : ""}`} onClick={() => update("radioIsLive", !settings.radioIsLive)} />
           <div><div style={{ fontWeight: 700, color: settings.radioIsLive ? "var(--danger)" : "var(--charcoal)" }}>Mark Radio as LIVE</div><div style={{ fontSize: 12, color: "var(--gray-mid)" }}>Shows a red LIVE badge. This is a manual status switch.</div></div>
         </div>
       </div>
+
+      <div className="card" style={{ padding: 24, marginBottom: 20 }}><h4 style={{ marginBottom: 6 }}>Programme Schedule</h4><p style={{ margin: "0 0 16px", color: "var(--gray-mid)", fontSize: 13 }}>Create a weekly clock for teaching, prayer, worship, announcements, and testimonies. Your streaming provider should use the same schedule for automated playout.</p><div className="grid-2"><div className="form-group"><label>Programme title</label><input value={scheduleDraft.title} onChange={(e) => setScheduleDraft({ ...scheduleDraft, title: e.target.value })} placeholder="Morning devotion" /></div><div className="form-group"><label>Type</label><select value={scheduleDraft.type} onChange={(e) => setScheduleDraft({ ...scheduleDraft, type: e.target.value })}><option>Teaching</option><option>Prayer</option><option>Worship</option><option>Announcement</option><option>Testimony</option></select></div><div className="form-group"><label>Start time</label><input type="time" value={scheduleDraft.start} onChange={(e) => setScheduleDraft({ ...scheduleDraft, start: e.target.value })} /></div><div className="form-group"><label>Duration (minutes)</label><input type="number" min="1" value={scheduleDraft.duration} onChange={(e) => setScheduleDraft({ ...scheduleDraft, duration: Number(e.target.value) })} /></div></div><button type="button" className="btn btn-outline btn-sm" onClick={addScheduleItem}><Icon name="plus" size={14} /> Add programme</button>{(settings.radioSchedule || []).map((item, index) => <div key={`${item.title}-${index}`} style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "10px 0", borderTop: "1px solid var(--gray-light)", marginTop: 10 }}><span><strong>{item.start}</strong> · {item.title} <small style={{ color: "var(--gray-mid)" }}>({item.type}, {item.duration} min)</small></span><button type="button" className="btn btn-danger btn-sm" onClick={() => removeScheduleItem(index)}>Remove</button></div>)}</div>
 
       <div className="card" style={{ padding: 24, marginBottom: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
