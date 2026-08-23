@@ -36,6 +36,7 @@ export default function AppProvider({ children }) {
     "/radio": "radio",
     "/prayer-wall": "prayer",
     "/blog": "blog",
+    "/books": "books",
     "/give": "give",
     "/contact": "contact",
     "/testimonies": "testimonies",
