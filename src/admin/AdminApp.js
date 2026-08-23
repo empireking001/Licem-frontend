@@ -246,28 +246,29 @@ export default function AdminApp() {
   if (!user) return <><AdminLogin /><ToastDisplay /></>;
 
   const PANELS = {
-    overview: <AdminOverview setActive={setActive} />,
-    health: <AdminContentHealth />,
-    faceweek: <AdminFaceOfWeek />,
-    sermons: <AdminSermons />,
-    events: <AdminEvents />,
-    radio: <AdminRadio />,
-    books: <AdminBooks />,
-    devotionals: <AdminDevotionals />,
-    blog: <AdminBlog />,
-    gallery: <AdminGallery />,
-    media: <AdminMedia />,
-    comments: <AdminComments />,
-    messages: <AdminContactMessages />,
-    donations: <AdminDonations />,
-    users: <AdminUsers />,
-    prayer: <AdminPrayerWall />,
-    announcements: <AdminAnnouncements />,
-    settings: <AdminSettings />,
-    AdminConnectManager: <AdminConnectManager />,
-    testimonies: <TestimonyManager />,
-    password: <AdminChangePassword />,
+    overview: AdminOverview,
+    health: AdminContentHealth,
+    faceweek: AdminFaceOfWeek,
+    sermons: AdminSermons,
+    events: AdminEvents,
+    radio: AdminRadio,
+    books: AdminBooks,
+    devotionals: AdminDevotionals,
+    blog: AdminBlog,
+    gallery: AdminGallery,
+    media: AdminMedia,
+    comments: AdminComments,
+    messages: AdminContactMessages,
+    donations: AdminDonations,
+    users: AdminUsers,
+    prayer: AdminPrayerWall,
+    announcements: AdminAnnouncements,
+    settings: AdminSettings,
+    AdminConnectManager,
+    testimonies: TestimonyManager,
+    password: AdminChangePassword,
   };
+  const ActivePanel = PANELS[active] || AdminOverview;
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--gray-pale)' }}>
@@ -276,7 +277,7 @@ export default function AdminApp() {
         <AdminHeader active={active} user={user} onViewSite={() => setPage('home')} />
         <main style={{ flex: 1, overflow: 'auto' }} className="animate-fade">
           <AdminPanelBoundary key={active} panel={active}>
-            {PANELS[active] || <AdminOverview setActive={setActive} />}
+            <ActivePanel key={active} setActive={setActive} />
           </AdminPanelBoundary>
         </main>
       </div>
