@@ -107,7 +107,7 @@ export default function PrayerWallPage() {
         <div className="container" style={{ maxWidth: 1100 }}>
           <div className="split-sidebar">
             {/* FORM */}
-            <div style={{ position: "sticky", top: 90 }}>
+            <div className="prayer-form-shell" style={{ position: "sticky", top: 90 }}>
               <div className="card" style={{ padding: 28 }}>
                 {submitted ? (
                   <div style={{ textAlign: "center", padding: "32px 0" }}>

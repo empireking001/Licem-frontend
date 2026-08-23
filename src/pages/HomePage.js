@@ -971,6 +971,7 @@ export default function HomePage() {
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 15 }}>
               We celebrate every member of this family
             </p>
+            <button className="btn btn-outline btn-sm" onClick={() => setPage("connect")} style={{ marginTop: 14, color: "var(--gold-light)", borderColor: "rgba(255,255,255,0.3)" }}>Connect & Register Birthday</button>
           </div>
 
           {/* Tabs */}

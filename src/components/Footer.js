@@ -65,7 +65,7 @@ export default function Footer() {
           {/* Resources */}
           <div>
             <div style={{ color: 'white', fontWeight: 700, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 18 }}>Resources</div>
-            {[['books','Books'],['devotionals','Devotionals'],['blog','News & Articles'],['gallery','Gallery'],['testimonies','Testimonies']].map(([p,label]) => (
+            {[['books','Books'],['devotionals','Devotionals'],['blog','News & Articles'],['gallery','Gallery'],['testimonies','Testimonies'],['connect','Connect & Birthday Registration']].map(([p,label]) => (
               <button key={p} onClick={() => setPage(p)} style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14, padding: '6px 0', textAlign: 'left', fontFamily: 'var(--font-body)', width: '100%' }}>{label}</button>
             ))}
           </div>

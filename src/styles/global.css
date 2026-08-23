@@ -287,6 +287,7 @@ a:hover { color: var(--forest-mid); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
   .split-2 { grid-template-columns: 1fr; gap: 40px; }
   .split-sidebar { grid-template-columns: 1fr; gap: 32px; }
+  .prayer-form-shell { position: static !important; top: auto !important; }
 }
 @media (max-width: 720px) {
   .spotlight-grid { grid-template-columns: 1fr; gap: 24px; }

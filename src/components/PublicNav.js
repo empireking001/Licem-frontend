@@ -17,6 +17,7 @@ const RESOURCE_LINKS = [
   { key: "blog", label: "News & Articles" },
   { key: "gallery", label: "Gallery" },
   { key: "testimonies", label: "Testimonies" },
+  { key: "connect", label: "Connect & Birthday Registration" },
 ];
 
 export default function PublicNav() {
