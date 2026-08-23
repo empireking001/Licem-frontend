@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import { PageBanner } from "../components/UI";
+import { radioAnalyticsAPI } from "../api";
 
 export default function RadioPage() {
   const { settings } = useApp();
@@ -9,6 +10,7 @@ export default function RadioPage() {
   const [volume, setVolume] = useState(0.8);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sessionId] = useState(() => `radio-${Date.now()}-${Math.random().toString(36).slice(2)}`);
 
   const streamUrl = settings?.radioStreamUrl || "";
   const radioName = settings?.radioName || "LICEM Radio";
@@ -47,10 +49,19 @@ export default function RadioPage() {
   };
 
   useEffect(() => {
+    if (!playing) return undefined;
+    const pulse = () => radioAnalyticsAPI.pulse(sessionId).catch(() => {});
+    pulse();
+    const timer = window.setInterval(pulse, 20000);
+    return () => window.clearInterval(timer);
+  }, [playing, sessionId]);
+
+  useEffect(() => {
     return () => {
       audioRef.current?.pause();
+      radioAnalyticsAPI.release(sessionId).catch(() => {});
     };
-  }, []);
+  }, [sessionId]);
 
   return (
     <div style={{ paddingTop: 70 }}>

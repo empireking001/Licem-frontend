@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { key: "radio", label: "📻 Radio" },
   { key: "prayer", label: "Prayer Wall" },
   { key: "blog", label: "Blog" },
+  { key: "books", label: "Books" },
   { key: "give", label: "Give" },
   { key: "contact", label: "Contact" },
   { key: "testimonies", label: "Testimonies" },

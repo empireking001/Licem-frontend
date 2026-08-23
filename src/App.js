@@ -20,6 +20,7 @@ import PrayerWallPage from "./pages/PrayerWallPage";
 import TestimoniesPage from "./pages/TestimoniesPage";
 import ConnectPage from "./pages/ConnectPage";
 import RadioPage from "./pages/RadioPage";
+import BooksPage from "./pages/BooksPage";
 
 // Admin
 import AdminApp from "./admin/AdminApp";
@@ -58,6 +59,7 @@ const isAdminPath =
     give: <GivePage />,
     contact: <ContactPage />,
     radio: <RadioPage />,
+    books: <BooksPage />,
     testimonies: <TestimoniesPage />,
     connect: <ConnectPage />,
   };

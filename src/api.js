@@ -49,6 +49,31 @@ export const sermonsAPI = {
   like: (id, v) => API.post(`/sermons/${id}/like`, { visitorId: v }),
 };
 
+export const booksAPI = {
+  getAll: (params) => API.get("/books", { params }),
+  adminAll: () => API.get("/books/admin/all"),
+  create: (data) => API.post("/books", data),
+  update: (id, data) => API.put(`/books/${id}`, data),
+  delete: (id) => API.delete(`/books/${id}`),
+  resolveDownload: (id) => API.post(`/books/${id}/download`),
+  upload: (formData) => API.post("/books/upload", formData, { headers: { "Content-Type": "multipart/form-data" } }),
+};
+
+export const radioAnalyticsAPI = {
+  pulse: (sessionId) => API.post("/radio-analytics/pulse", { sessionId }),
+  release: (sessionId) => API.delete(`/radio-analytics/pulse/${sessionId}`),
+  summary: () => API.get("/radio-analytics/summary"),
+};
+
+export const devotionalsAPI = {
+  getCurrent: () => API.get("/devotionals/current"),
+  getAll: () => API.get("/devotionals"),
+  create: (data) => API.post("/devotionals", data),
+  update: (id, data) => API.put(`/devotionals/${id}`, data),
+  delete: (id) => API.delete(`/devotionals/${id}`),
+  aiDraft: (data) => API.post("/devotionals/ai-draft", data),
+};
+
 export const eventsAPI = {
   getAll: (params) => API.get("/events", { params }),
   getOne: (id) => API.get(`/events/${id}`),

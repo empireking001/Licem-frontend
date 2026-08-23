@@ -5,6 +5,8 @@ import AdminOverview  from './AdminOverview';
 import AdminSermons   from './AdminSermons';
 import AdminEvents    from './AdminEvents';
 import AdminRadio     from './AdminRadio';
+import AdminBooks     from './AdminBooks';
+import AdminDevotionals from './AdminDevotionals';
 import AdminBlog      from './AdminBlog';
 import AdminGallery   from './AdminGallery';
 import AdminConnectManager from './AdminConnectManager';
@@ -25,6 +27,8 @@ const MENU = [
   { key: "sermons", label: "Sermons", icon: "video" },
   { key: "events", label: "Events", icon: "calendar" },
   { key: "radio", label: "Radio Management", icon: "music" },
+  { key: "books", label: "Book Library", icon: "bookOpen" },
+  { key: "devotionals", label: "Weekly Devotionals", icon: "bookOpen" },
   { key: "blog", label: "Blog Posts", icon: "file" },
   { key: "gallery", label: "Gallery", icon: "images" },
   { key: "media", label: "Media Library", icon: "image" },
@@ -242,6 +246,8 @@ export default function AdminApp() {
     sermons: <AdminSermons />,
     events: <AdminEvents />,
     radio: <AdminRadio />,
+    books: <AdminBooks />,
+    devotionals: <AdminDevotionals />,
     blog: <AdminBlog />,
     gallery: <AdminGallery />,
     media: <AdminMedia />,

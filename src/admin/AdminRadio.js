@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Icon, Spinner } from "../components/UI";
-import { settingsAPI } from "../api";
+import { settingsAPI, radioAnalyticsAPI } from "../api";
 
 export default function AdminRadio() {
   const { showToast, setSettings: setGlobalSettings } = useApp();
@@ -9,6 +9,7 @@ export default function AdminRadio() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
+  const [analytics, setAnalytics] = useState(null);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -24,6 +25,13 @@ export default function AdminRadio() {
   }, [showToast]);
 
   const update = (key, value) => setSettings((current) => ({ ...current, [key]: value }));
+
+  useEffect(() => {
+    const loadAnalytics = () => radioAnalyticsAPI.summary().then((response) => setAnalytics(response.data)).catch(() => {});
+    loadAnalytics();
+    const timer = window.setInterval(loadAnalytics, 30000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const save = async () => {
     if (!settings?.radioStreamUrl?.trim()) {
@@ -111,6 +119,14 @@ export default function AdminRadio() {
           <button type="button" aria-pressed={Boolean(settings.radioIsLive)} className={`toggle ${settings.radioIsLive ? "on" : ""}`} onClick={() => update("radioIsLive", !settings.radioIsLive)} />
           <div><div style={{ fontWeight: 700, color: settings.radioIsLive ? "var(--danger)" : "var(--charcoal)" }}>Mark Radio as LIVE</div><div style={{ fontSize: 12, color: "var(--gray-mid)" }}>Shows a red LIVE badge. This is a manual status switch.</div></div>
         </div>
+      </div>
+
+      <div className="card" style={{ padding: 24, marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+          <div><h4 style={{ marginBottom: 6 }}>Listener Analytics</h4><p style={{ margin: 0, color: "var(--gray-mid)", fontSize: 13 }}>Live estimate from visitors actively playing Radio on the LICEM website.</p></div>
+          <div style={{ display: "flex", gap: 28 }}><div><strong style={{ display: "block", fontSize: 28, color: "var(--forest)" }}>{analytics?.activeListeners ?? "—"}</strong><span style={{ color: "var(--gray-mid)", fontSize: 12 }}>Active players</span></div><div><strong style={{ display: "block", fontSize: 28 }}>{analytics?.totalSessions24h ?? "—"}</strong><span style={{ color: "var(--gray-mid)", fontSize: 12 }}>Sessions / 24h</span></div></div>
+        </div>
+        <p style={{ margin: "16px 0 0", color: "var(--gray-soft)", fontSize: 12 }}>This is not the provider-wide concurrent listener count. Connect a provider or Icecast statistics endpoint for authoritative radio listener analytics.</p>
       </div>
 
       <div className="card" style={{ padding: 24, background: "var(--info-pale)" }}>
