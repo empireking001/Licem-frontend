@@ -13,7 +13,6 @@ const PRIMARY_LINKS = [
 ];
 const RESOURCE_LINKS = [
   { key: "books", label: "Books" },
-  { key: "devotionals", label: "Devotionals" },
   { key: "blog", label: "Blog & Articles" },
   { key: "gallery", label: "Gallery" },
   { key: "testimonies", label: "Testimonies" },

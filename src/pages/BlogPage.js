@@ -26,6 +26,10 @@ export default function BlogPage({ initialCategory = "All" }) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    setFilter(initialCategory);
+  }, [initialCategory]);
+
+  useEffect(() => {
     setLoading(true);
     const params = { status: "Published" };
     if (filter !== "All") params.category = filter;
