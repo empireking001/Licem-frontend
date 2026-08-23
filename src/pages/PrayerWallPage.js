@@ -67,10 +67,9 @@ export default function PrayerWallPage() {
         name: form.anonymous ? "Anonymous" : form.name || "Anonymous",
       };
       const r = await API.post("/prayers", payload);
-      setPrayers((p) => [r.data, ...p]);
       setSubmitted(true);
       setForm({ name: "", request: "", category: "General", anonymous: false });
-      showToast("Prayer request submitted 🙏");
+      showToast("Prayer submitted for approval 🙏");
     } catch {
       showToast("Error. Please try again.", "error");
     }
