@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Icon, Spinner } from '../components/UI';
 import DailyVerse from '../components/DailyVerse';
-import API, { sermonsAPI, eventsAPI } from '../api';
+import API, { sermonsAPI, eventsAPI, subscribersAPI } from '../api';
 
 export default function HomePage() {
   const { pageTopPadding } = useApp();
@@ -11,6 +11,7 @@ export default function HomePage() {
   const [events,  setEvents]    = useState([]);
   const [email,   setEmail]     = useState('');
   const [subDone, setSubDone]   = useState(false);
+  const [subLoading, setSubLoading] = useState(false);
   const [loading, setLoading]   = useState(true);
 
   // 1. Mobile layout layout-detection state
@@ -895,9 +896,16 @@ export default function HomePage() {
               />
               <button
                 className="btn btn-primary"
-                onClick={() => email && setSubDone(true)}
+                disabled={subLoading}
+                onClick={async () => {
+                  if (!/^\S+@\S+\.\S+$/.test(email.trim())) return;
+                  setSubLoading(true);
+                  try { await subscribersAPI.subscribe(email.trim()); setSubDone(true); setEmail(''); }
+                  catch { alert('We could not save your subscription. Please try again.'); }
+                  finally { setSubLoading(false); }
+                }}
               >
-                Subscribe <Icon name="mail" size={15} />
+                {subLoading ? 'Saving…' : 'Subscribe'} <Icon name="mail" size={15} />
               </button>
             </div>
           )}

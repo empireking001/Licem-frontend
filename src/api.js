@@ -135,6 +135,12 @@ export const usersAPI = {
   delete: (id) => API.delete(`/users/${id}`),
 };
 
+export const subscribersAPI = {
+  subscribe: (email) => API.post("/subscribers", { email, source: "homepage" }),
+  getAll: () => API.get("/subscribers"),
+  updateStatus: (id, active) => API.put(`/subscribers/${id}/status`, { active }),
+};
+
 export const settingsAPI = {
   get: () => API.get("/settings"),
   update: (data) => API.put("/settings", data),

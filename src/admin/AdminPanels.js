@@ -7,6 +7,7 @@ import {
   mediaAPI,
   settingsAPI,
   contactAPI,
+  subscribersAPI,
   resolveMediaUrl,
 } from "../api";
 import {
@@ -3117,6 +3118,8 @@ export function AdminContactMessages() {
         )}
       </div>
 
+      <AdminSubscriberList />
+
       {confirm && (
         <ConfirmModal
           title="Delete Message?"
@@ -3129,3 +3132,19 @@ export function AdminContactMessages() {
   );
 }
 // export default AdminComments
+
+function AdminSubscriberList() {
+  const { showToast } = useApp();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const load = () => subscribersAPI.getAll().then((r) => setItems(Array.isArray(r.data) ? r.data : [])).catch(() => showToast("Subscribers could not load.", "error")).finally(() => setLoading(false));
+  useEffect(load, []);
+  const toggle = async (item) => {
+    try { const r = await subscribersAPI.updateStatus(item._id, !item.active); setItems((current) => current.map((x) => x._id === item._id ? r.data : x)); }
+    catch { showToast("Could not update subscriber status.", "error"); }
+  };
+  return <div className="card" style={{ marginTop: 24, padding: 24 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}><div><h4 style={{ fontSize: 18, marginBottom: 4 }}>Newsletter Subscribers</h4><p style={{ color: "var(--gray-mid)", fontSize: 13 }}>{items.filter((x) => x.active).length} active subscribers</p></div><button className="btn btn-ghost btn-sm" onClick={() => { setLoading(true); load(); }}>Refresh</button></div>
+    {loading ? <div style={{ padding: 24, textAlign: "center" }}><Spinner size={24} /></div> : items.length === 0 ? <EmptyState icon="mail" title="No subscribers yet" desc="Homepage newsletter subscriptions will appear here." /> : <div className="table-wrap"><table><thead><tr><th>Email</th><th>Source</th><th>Subscribed</th><th>Status</th><th>Action</th></tr></thead><tbody>{items.map((item) => <tr key={item._id}><td>{item.email}</td><td>{item.source || "homepage"}</td><td>{new Date(item.subscribedAt || item.createdAt).toLocaleDateString()}</td><td><span className={`badge ${item.active ? "badge-green" : "badge-gray"}`}>{item.active ? "Active" : "Inactive"}</span></td><td><button className="btn btn-ghost btn-sm" onClick={() => toggle(item)}>{item.active ? "Unsubscribe" : "Reactivate"}</button></td></tr>)}</tbody></table></div>}
+  </div>;
+}
