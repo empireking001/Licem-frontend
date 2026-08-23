@@ -258,6 +258,12 @@ a:hover { color: var(--forest-mid); }
 }
 
 /* Fixed photo + flexible text (Face of the Week) */
+.face-week-section h2 { color: var(--charcoal); }
+.face-week-card { color: var(--charcoal); }
+.face-week-card .face-week-copy { color: var(--charcoal); }
+body.dark .face-week-card { background: #1c2128 !important; }
+body.dark .face-week-section h2, body.dark .face-week-card h3 { color: #f0f6fc; }
+body.dark .face-week-card .face-week-bio, body.dark .face-week-card blockquote { color: #c9d1d9 !important; }
 .spotlight-grid {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -291,6 +297,7 @@ a:hover { color: var(--forest-mid); }
 }
 @media (max-width: 720px) {
   .spotlight-grid { grid-template-columns: 1fr; gap: 24px; }
+  .face-week-copy { padding: 24px !important; }
 }
 @media (max-width: 640px) {
   .stats-4 { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }

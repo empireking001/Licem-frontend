@@ -19,7 +19,9 @@ export default function AppProvider({ children }) {
       return null;
     }
   });
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("licem_settings") || "null"); } catch { return null; }
+  });
   const [dark, setDark] = useState(
     () => localStorage.getItem("gl_dark") === "1",
   );
@@ -81,7 +83,7 @@ export default function AppProvider({ children }) {
   useEffect(() => {
     settingsAPI
       .get()
-      .then((r) => setSettings(r.data))
+      .then((r) => { setSettings(r.data); localStorage.setItem("licem_settings", JSON.stringify(r.data)); })
       .catch(() => {});
   }, []);
 

@@ -1461,6 +1461,15 @@ export function AdminSettings() {
                       />
                     </div>
                     <div className="form-group">
+                      <label>Short Biography or Ministry Write-up</label>
+                      <textarea
+                        rows={4}
+                        value={s?.faceOfWeekBio || ""}
+                        onChange={(e) => U("faceOfWeekBio", e.target.value)}
+                        placeholder="Introduce this member, their ministry role, and how they serve the church..."
+                      />
+                    </div>
+                    <div className="form-group">
                       <label>Quote or Message</label>
                       <textarea
                         rows={3}

@@ -746,7 +746,7 @@ export default function HomePage() {
 
       {/* ── FACE OF THE WEEK ────────────────── */}
       {settings?.faceOfWeekImage && (
-        <section style={{ padding: "72px 0", background: "var(--white)" }}>
+        <section className="face-week-section" style={{ padding: "72px 0", background: "var(--white)" }}>
           <div className="container" style={{ maxWidth: 900 }}>
             <div style={{ textAlign: "center", marginBottom: 40 }}>
               <span
@@ -766,7 +766,8 @@ export default function HomePage() {
               <h2>Face of the Week</h2>
             </div>
             <div
-              className="spotlight-grid"
+                              className="spotlight-grid face-week-card"
+
               style={{
                 background: "var(--gray-ghost)",
                 borderRadius: 24,
@@ -794,7 +795,7 @@ export default function HomePage() {
                   }}
                 />
               </div>
-              <div style={{ padding: "32px 32px 32px 0" }}>
+              <div className="face-week-copy" style={{ padding: "32px 32px 32px 0" }}>
                 <div
                   style={{
                     display: "inline-block",
@@ -833,6 +834,7 @@ export default function HomePage() {
                     {settings.faceOfWeekTitle}
                   </p>
                 )}
+                {settings.faceOfWeekBio && <p className="face-week-bio" style={{ color: "var(--gray-dark)", fontSize: 15, lineHeight: 1.75, margin: "0 0 18px" }}>{settings.faceOfWeekBio}</p>}
                 {settings.faceOfWeekQuote && (
                   <blockquote
                     style={{
