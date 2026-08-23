@@ -22,6 +22,8 @@ export default function TestimoniesPage() {
     story: "",
     category: "General Testimony",
     anonymous: false,
+    consentConfirmed: false,
+    honeypot: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const S = (k, v) => setForm((f) => ({ ...f, [k]: v }));
@@ -38,13 +40,16 @@ export default function TestimoniesPage() {
       showToast("Please fill in your title and story.", "error");
       return;
     }
+    if (!form.consentConfirmed) {
+      showToast("Please confirm publication consent before submitting.", "error");
+      return;
+    }
     try {
       const payload = {
         ...form,
         name: form.anonymous ? "Anonymous" : form.name || "Anonymous",
       };
       const r = await API.post("/testimonies", payload);
-      setTestimonies((t) => [r.data, ...t]);
       setSubmitted(true);
       setForm({
         name: "",
@@ -52,6 +57,8 @@ export default function TestimoniesPage() {
         story: "",
         category: "General Testimony",
         anonymous: false,
+        consentConfirmed: false,
+        honeypot: "",
       });
       showToast("Testimony submitted! Glory to God 🙌");
     } catch {
@@ -118,7 +125,7 @@ export default function TestimoniesPage() {
                         lineHeight: 1.6,
                       }}
                     >
-                      Your story can strengthen someone else's faith.
+                      Your story can strengthen someone else's faith. Every submission is reviewed before it appears publicly. Please do not include private financial, medical, or contact details.
                     </p>
                     <div
                       style={{
@@ -181,6 +188,8 @@ export default function TestimoniesPage() {
                           placeholder="Share what God did for you..."
                         />
                       </div>
+                      <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13, lineHeight: 1.5, color: "var(--gray-mid)" }}><input type="checkbox" checked={form.consentConfirmed} onChange={(e) => S("consentConfirmed", e.target.checked)} style={{ width: "auto", marginTop: 3 }} />I confirm I have permission to share this story and allow LICEM to review and publish it. I understand I can request removal.</label>
+                      <input value={form.honeypot} onChange={(e) => S("honeypot", e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px", opacity: 0 }} />
                       <button
                         className="btn btn-gold"
                         onClick={submit}

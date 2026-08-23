@@ -49,6 +49,7 @@ export default function AppProvider({ children }) {
     "/contact": "contact",
     "/testimonies": "testimonies",
     "/connect": "connect",
+    "/privacy": "privacy",
   };
   const PAGE_TO_PATH = Object.fromEntries(
     Object.entries(PATH_TO_PAGE).map(([path, pageName]) => [pageName, path]),

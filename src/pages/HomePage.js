@@ -5,8 +5,7 @@ import DailyVerse from '../components/DailyVerse';
 import API, { sermonsAPI, eventsAPI, subscribersAPI } from '../api';
 
 export default function HomePage() {
-  const { pageTopPadding } = useApp();
-  const { setPage, settings } = useApp();
+  const { pageTopPadding, setPage, settings, startRadio, radioPlaying, radioLoading } = useApp();
   const [sermons, setSermons]   = useState([]);
   const [events,  setEvents]    = useState([]);
   const [email,   setEmail]     = useState('');
@@ -292,14 +291,14 @@ export default function HomePage() {
               {
                 icon: "⛪",
                 label: "Sunday Service",
-                time: "9:00 AM & 11:00 AM",
+                time: settings?.sundayTimes || "9:00 AM & 11:00 AM",
               },
               {
                 icon: "📖",
                 label: "Midweek Service",
-                time: "Wednesday 6:30 PM",
+                time: settings?.midweekTime || "Wednesday 6:30 PM",
               },
-              { icon: "🙏", label: "Prayer Meeting", time: "Friday 6:00 AM" },
+              { icon: "🙏", label: "Prayer Meeting", time: settings?.prayerTime || "Friday 6:00 AM" },
             ].map((s) => (
               <div
                 key={s.label}
@@ -356,6 +355,8 @@ export default function HomePage() {
           <Icon name="chevDown" size={22} color="rgba(255,255,255,0.4)" />
         </div>
       </section>
+
+      <section className="section-sm" style={{ background: "var(--forest)", color: "white" }}><div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20, flexWrap: "wrap" }}><div><span className="eyebrow" style={{ color: "var(--gold-light)" }}>LICEM RADIO</span><h2 style={{ color: "white", margin: "6px 0" }}>Listen Live</h2><p style={{ color: "rgba(255,255,255,.72)", margin: 0 }}>{settings?.radioNowPlaying || "Worship, prayer, and messages from LICEM"}</p></div><button className="btn btn-gold btn-lg" onClick={() => startRadio()} disabled={radioLoading}>{radioPlaying ? "Playing Now" : radioLoading ? "Connecting…" : "Play Radio"} <Icon name={radioPlaying ? "volume" : "play"} size={16} /></button></div></section>
 
       <DailyVerse />
 
@@ -861,8 +862,7 @@ export default function HomePage() {
           <span className="eyebrow">STAY CONNECTED</span>
           <h2 style={{ marginBottom: 12 }}>Get Weekly Devotionals</h2>
           <p style={{ marginBottom: 36 }}>
-            Receive sermons, events updates and encouragement straight to your
-            inbox.
+            Receive one thoughtful LICEM update each week: devotionals, sermons, events, and encouragement. You can unsubscribe whenever you choose.
           </p>
           {subDone ? (
             <div

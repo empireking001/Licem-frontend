@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { sermonsAPI, eventsAPI, postsAPI, donationsAPI, commentsAPI, usersAPI } from '../api';
+import API, { sermonsAPI, eventsAPI, postsAPI, donationsAPI, commentsAPI, usersAPI, booksAPI } from '../api';
+
+const booksAPIForOverview = () => booksAPI.adminAll();
 import { Icon, StatCard, Spinner } from '../components/UI';
 
 export default function AdminOverview({ setActive }) {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
   const [recent,  setRecent]  = useState([]);
+  const [pendingWork, setPendingWork] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -36,6 +39,31 @@ export default function AdminOverview({ setActive }) {
       acts.sort((a, b) => new Date(b.time) - new Date(a.time));
       setRecent(acts.slice(0, 8));
     }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    const requests = [
+      ['prayers', 'Pending prayers', 'prayer', 'prayers'],
+      ['comments', 'Comments awaiting approval', 'comments', 'comments'],
+      ['testimonies', 'Testimonies awaiting review', 'testimonies', 'testimonies'],
+      ['messages', 'Unread contact messages', 'messages', 'messages'],
+      ['devotionals', 'Scheduled devotionals', 'devotionals', 'devotionals'],
+      ['books', 'Unpublished books', 'books', 'books'],
+    ];
+    Promise.allSettled([
+      API.get('/prayers/admin/all'), commentsAPI.getAll(), API.get('/testimonies/admin/all'), API.get('/contact'), API.get('/devotionals'), booksAPIForOverview(),
+    ]).then((results) => {
+      const values = results.map((r) => r.status === 'fulfilled' ? (Array.isArray(r.value.data) ? r.value.data : (r.value.data?.data || [])) : []);
+      const counts = [
+        values[0].filter((x) => !x.approved).length,
+        values[1].filter((x) => !x.approved && !x.spam).length,
+        values[2].filter((x) => x.approved === false || x.status === 'Pending').length,
+        values[3].filter((x) => !x.read).length,
+        values[4].filter((x) => x.status === 'scheduled' && !x.skipPublication).length,
+        values[5].filter((x) => x.published === false || x.status === 'Draft' || x.status === 'draft').length,
+      ];
+      setPendingWork(requests.map((item, i) => ({ label: item[1], icon: item[2], page: item[3], count: counts[i] })).filter((item) => item.count > 0));
+    });
   }, []);
 
   if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 300 }}><Spinner size={40} /></div>;
@@ -75,7 +103,12 @@ export default function AdminOverview({ setActive }) {
       </div>
 
       <div className="grid-2" style={{ gap: 24 }}>
-        {/* Recent activity */}
+        {pendingWork.length > 0 && <div className="card" style={{ padding: 24, marginBottom: 24, borderLeft: '4px solid var(--gold)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}><div><h3 style={{ fontSize: 18 }}>Pending Work</h3><p style={{ color: 'var(--gray-mid)', fontSize: 13, marginTop: 4 }}>Items that need attention from the ministry team.</p></div><span className="badge badge-gold">{pendingWork.reduce((sum, item) => sum + item.count, 0)} total</span></div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 10 }}>{pendingWork.map((item) => <button key={item.page} className="btn btn-ghost" onClick={() => setActive(item.page)} style={{ justifyContent: 'space-between', textAlign: 'left', padding: 14 }}><span style={{ display: 'flex', alignItems: 'center', gap: 9 }}><Icon name={item.icon} size={16} color="var(--gold)" />{item.label}</span><strong>{item.count}</strong></button>)}</div>
+      </div>}
+
+      {/* Recent activity */}
         <div className="card" style={{ padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
             <h3 style={{ fontSize: 18 }}>Recent Activity</h3>

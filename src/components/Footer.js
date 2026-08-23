@@ -91,8 +91,8 @@ export default function Footer() {
           borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 28,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12,
         }}>
-          <div style={{ fontSize: 13 }}>© {new Date().getFullYear()} {name}. All rights reserved.</div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>Built for the Kingdom 🙏</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', fontSize: 13 }}><span>© {new Date().getFullYear()} {name}. All rights reserved.</span><button onClick={() => setPage('privacy')} style={{ background: 'none', border: 0, padding: 0, color: 'rgba(255,255,255,0.65)', cursor: 'pointer', fontSize: 13 }}>Privacy & Consent</button></div>
+          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>LICEM · Living Christ Evangelical Ministries</div>
         </div>
       </div>
     </footer>

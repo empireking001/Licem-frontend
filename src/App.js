@@ -21,6 +21,7 @@ import TestimoniesPage from "./pages/TestimoniesPage";
 import ConnectPage from "./pages/ConnectPage";
 import RadioPage from "./pages/RadioPage";
 import BooksPage from "./pages/BooksPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import PersistentRadioPlayer from "./components/PersistentRadioPlayer";
 
 // Admin
@@ -64,6 +65,7 @@ const isAdminPath =
     devotionals: <BlogPage initialCategory="Devotional" />,
     testimonies: <TestimoniesPage />,
     connect: <ConnectPage />,
+    privacy: <PrivacyPage />,
   };
 
   return (

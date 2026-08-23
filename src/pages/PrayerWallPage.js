@@ -37,6 +37,7 @@ export default function PrayerWallPage() {
     request: "",
     category: "General",
     anonymous: false,
+    honeypot: "",
   });
   const S = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -66,9 +67,9 @@ export default function PrayerWallPage() {
         ...form,
         name: form.anonymous ? "Anonymous" : form.name || "Anonymous",
       };
-      const r = await API.post("/prayers", payload);
+      await API.post("/prayers", payload);
       setSubmitted(true);
-      setForm({ name: "", request: "", category: "General", anonymous: false });
+      setForm({ name: "", request: "", category: "General", anonymous: false, honeypot: "" });
       showToast("Prayer submitted for approval 🙏");
     } catch {
       showToast("Error. Please try again.", "error");
@@ -143,8 +144,7 @@ export default function PrayerWallPage() {
                         lineHeight: 1.6,
                       }}
                     >
-                      Your request is safe and will be prayed over by our
-                      community.
+                      Your request is reviewed by LICEM before it appears publicly. Please do not include passwords, payment details, addresses, or unnecessary medical information.
                     </p>
                     <div
                       style={{
@@ -199,6 +199,7 @@ export default function PrayerWallPage() {
                           placeholder="Share what you would like the church to pray for..."
                         />
                       </div>
+                      <input value={form.honeypot} onChange={(e) => S("honeypot", e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px", opacity: 0 }} />
                       <button
                         className="btn btn-primary"
                         onClick={submit}

@@ -6,6 +6,7 @@ export default function TestimonyManager() {
   const { showToast } = useApp();
   const [testimonies, setTestimonies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notes, setNotes] = useState({});
 
   useEffect(() => {
     fetchTestimonies();
@@ -24,14 +25,22 @@ export default function TestimonyManager() {
 
   const handleApprove = async (id) => {
     try {
-      await API.put(`/testimonies/${id}/approve`);
+      await API.put(`/testimonies/${id}/approve`, { note: notes[id] || "" });
       setTestimonies(
-        testimonies.map((t) => (t._id === id ? { ...t, approved: true } : t)),
+        testimonies.map((t) => (t._id === id ? { ...t, approved: true, moderationStatus: "approved", moderationNote: notes[id] || "", moderatedAt: new Date().toISOString() } : t)),
       );
       showToast("Testimony approved and live!");
     } catch (err) {
       showToast("Failed to approve", "error");
     }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      await API.put(`/testimonies/${id}/reject`, { note: notes[id] || "Rejected during moderation review." });
+      setTestimonies(testimonies.map((t) => (t._id === id ? { ...t, approved: false, moderationStatus: "rejected", moderationNote: notes[id] || "Rejected during moderation review.", moderatedAt: new Date().toISOString() } : t)));
+      showToast("Testimony rejected and kept private");
+    } catch (err) { showToast("Failed to reject", "error"); }
   };
 
   const handleDelete = async (id) => {
@@ -58,7 +67,7 @@ export default function TestimonyManager() {
         }}
       >
         <h2 style={{ fontSize: 24 }}>Testimony Manager</h2>
-        <div className="badge badge-gold">{testimonies.length} Total</div>
+        <div style={{ display: "flex", gap: 8 }}><div className="badge badge-gold">{testimonies.length} Total</div><div className="badge" style={{ background: "#ffeeee", color: "#cc0000" }}>{testimonies.filter((t) => !t.approved && t.moderationStatus !== "rejected").length} Pending</div></div>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -109,7 +118,7 @@ export default function TestimonyManager() {
                           fontSize: 11,
                         }}
                       >
-                        Pending Approval
+                        {t.moderationStatus === "rejected" ? "Rejected · Private" : "Pending Approval"}
                       </span>
                     )}
                   </div>
@@ -137,6 +146,7 @@ export default function TestimonyManager() {
                       Approve
                     </button>
                   )}
+                  {!t.approved && t.moderationStatus !== "rejected" && <button className="btn btn-sm" onClick={() => handleReject(t._id)} style={{ background: "#fff7ed", color: "#b45309", border: "1px solid #f59e0b" }}>Reject</button>}
                   <button
                     className="btn btn-sm"
                     onClick={() => handleDelete(t._id)}
@@ -151,6 +161,8 @@ export default function TestimonyManager() {
                 </div>
               </div>
 
+              {!t.approved && <textarea value={notes[t._id] || ""} onChange={(e) => setNotes((n) => ({ ...n, [t._id]: e.target.value }))} placeholder="Optional moderation note" rows={2} style={{ width: "100%", marginTop: 14, fontSize: 13 }} />}
+              {t.moderationNote && <div style={{ marginTop: 10, fontSize: 12, color: "var(--gray-mid)" }}>Moderation note: {t.moderationNote} · {t.moderatedAt ? new Date(t.moderatedAt).toLocaleString() : ""}</div>}
               <div
                 style={{
                   marginTop: 16,
