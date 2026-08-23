@@ -14,11 +14,11 @@ const CATS = [
   "News",
 ];
 
-export default function BlogPage() {
+export default function BlogPage({ initialCategory = "All" }) {
   const { showToast, pageTopPadding } = useApp();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState(initialCategory);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
   const [comments, setComments] = useState([]);

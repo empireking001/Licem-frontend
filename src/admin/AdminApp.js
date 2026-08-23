@@ -8,6 +8,7 @@ import AdminRadio     from './AdminRadio';
 import AdminBooks     from './AdminBooks';
 import AdminDevotionals from './AdminDevotionals';
 import AdminContentHealth from './AdminContentHealth';
+import AdminFaceOfWeek from './AdminFaceOfWeek';
 import AdminBlog      from './AdminBlog';
 import AdminGallery   from './AdminGallery';
 import AdminConnectManager from './AdminConnectManager';
@@ -26,6 +27,7 @@ import {
 const MENU = [
   { key: "overview", label: "Overview", icon: "activity" },
   { key: "health", label: "Content Health", icon: "check" },
+  { key: "faceweek", label: "Face of the Week", icon: "user" },
   { key: "sermons", label: "Sermons", icon: "video" },
   { key: "events", label: "Events", icon: "calendar" },
   { key: "radio", label: "Radio Management", icon: "music" },
@@ -246,6 +248,7 @@ export default function AdminApp() {
   const PANELS = {
     overview: <AdminOverview setActive={setActive} />,
     health: <AdminContentHealth />,
+    faceweek: <AdminFaceOfWeek />,
     sermons: <AdminSermons />,
     events: <AdminEvents />,
     radio: <AdminRadio />,

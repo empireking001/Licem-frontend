@@ -775,7 +775,7 @@ export default function HomePage() {
                 boxShadow: "var(--shadow-md)",
               }}
             >
-              <div style={{ position: "relative" }}>
+              <div className="face-week-photo-frame" style={{ position: "relative", background: "#111827" }}>
                 <img
                   src={settings.faceOfWeekImage}
                   alt={settings.faceOfWeekName}
@@ -784,14 +784,9 @@ export default function HomePage() {
                     height: 320,
                     objectFit: "cover",
                     display: "block",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(to right, transparent 60%, var(--gray-ghost))",
+                    position: "relative",
+                    zIndex: 1,
+                    border: "3px solid var(--gold)",
                   }}
                 />
               </div>

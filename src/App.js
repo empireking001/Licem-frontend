@@ -61,7 +61,7 @@ const isAdminPath =
     contact: <ContactPage />,
     radio: <RadioPage />,
     books: <BooksPage />,
-    devotionals: <BlogPage />,
+    devotionals: <BlogPage initialCategory="Devotional" />,
     testimonies: <TestimoniesPage />,
     connect: <ConnectPage />,
   };
