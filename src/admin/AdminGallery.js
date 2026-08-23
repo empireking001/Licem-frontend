@@ -30,7 +30,7 @@ export default function AdminGallery() {
     setLoading(true);
     galleryAPI.adminAll().then(r => setAlbums(r.data || [])).catch(() => {}).finally(() => setLoading(false));
   };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const openNew  = () => { setForm({ title: '', description: '', group: 'General', eventDate: '', published: true }); setModal('new'); };
   const openEdit = (a) => { setForm({ title: a.title, description: a.description || '', group: a.group, eventDate: a.eventDate?.slice(0,10) || '', published: a.published }); setModal(a._id); };

@@ -17,7 +17,7 @@ export function AdminEvents() {
   const S = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const load = () => { setLoading(true); eventsAPI.getAll().then(r => setEvents(r.data || [])).catch(() => {}).finally(() => setLoading(false)); };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const save = async () => {
     try {

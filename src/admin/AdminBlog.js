@@ -16,7 +16,7 @@ export default function AdminBlog() {
   const S = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const load = () => { setLoading(true); postsAPI.adminAll().then(r => setPosts(r.data || [])).catch(() => {}).finally(() => setLoading(false)); };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const save = async () => {
     try {

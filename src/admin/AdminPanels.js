@@ -36,7 +36,7 @@ export function AdminComments() {
       .catch(() => {})
       .finally(() => setLoading(false));
   };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const approve = async (id) => {
     try {
@@ -261,7 +261,7 @@ export function AdminDonations() {
       .catch(() => {})
       .finally(() => setLoading(false));
   };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const del = async () => {
     try {
@@ -516,7 +516,7 @@ export function AdminUsers() {
       .catch(() => {})
       .finally(() => setLoading(false));
   };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const save = async () => {
     try {
@@ -767,7 +767,7 @@ export function AdminMedia() {
       .catch(() => {})
       .finally(() => setLoading(false));
   };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const uploadFiles = async (e) => {
     const fd = new FormData();
@@ -3138,7 +3138,7 @@ function AdminSubscriberList() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const load = () => subscribersAPI.getAll().then((r) => setItems(Array.isArray(r.data) ? r.data : [])).catch(() => showToast("Subscribers could not load.", "error")).finally(() => setLoading(false));
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
   const toggle = async (item) => {
     try { const r = await subscribersAPI.updateStatus(item._id, !item.active); setItems((current) => current.map((x) => x._id === item._id ? r.data : x)); }
     catch { showToast("Could not update subscriber status.", "error"); }

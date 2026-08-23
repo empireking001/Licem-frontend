@@ -20,7 +20,7 @@ export default function AdminSermons() {
   const S = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const load = () => { setLoading(true); sermonsAPI.getAll({ limit: 100 }).then(r => setSermons(r.data.sermons || [])).catch(() => {}).finally(() => setLoading(false)); };
-  useEffect(load, []);
+  useEffect(() => { load(); }, []);
 
   const save = async () => {
     try {
