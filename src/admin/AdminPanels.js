@@ -1,6 +1,6 @@
 // ── COMMENTS ─────────────────────────────────────────
 import { useState, useEffect } from "react";
-import {
+import API, {
   commentsAPI,
   donationsAPI,
   usersAPI,
@@ -2606,16 +2606,17 @@ export function AdminPrayerWall() {
 
   const load = () => {
     setLoading(true);
-    import("../api").then(({ default: API }) => {
-      API.get("/prayers")
-        .then((r) => setPrayers(r.data || []))
-        .catch(() => {})
-        .finally(() => setLoading(false));
-    });
+    API.get("/prayers/admin/all")
+      .then((r) => setPrayers(Array.isArray(r.data) ? r.data : []))
+      .catch(() => showToast("Prayer requests could not load.", "error"))
+      .finally(() => setLoading(false));
   };
-  useState(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
+
+  const setApproval = async (id, approved) => {
+    try { const r = await API.put(`/prayers/${id}/approval`, { approved }); setPrayers((items) => items.map((x) => x._id === id ? r.data : x)); showToast(approved ? "Prayer approved and published." : "Prayer rejected."); }
+    catch { showToast("Could not update prayer approval.", "error"); }
+  };
 
   const markAnswered = async (id) => {
     try {
@@ -2641,12 +2642,7 @@ export function AdminPrayerWall() {
     }
   };
 
-  const filtered =
-    filter === "All"
-      ? prayers
-      : filter === "Answered"
-        ? prayers.filter((p) => p.answered)
-        : prayers.filter((p) => !p.answered);
+  const filtered = filter === "All" ? prayers : filter === "Pending" ? prayers.filter((p) => !p.approved) : filter === "Answered" ? prayers.filter((p) => p.answered && p.approved) : prayers.filter((p) => p.approved && !p.answered);
   const totalPrayers = prayers.reduce((a, p) => a + (p.prayerCount || 0), 0);
 
   return (
@@ -2666,7 +2662,7 @@ export function AdminPrayerWall() {
           </p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          {["All", "Pending", "Answered"].map((f) => (
+          {["All", "Pending", "Active", "Answered"].map((f) => (
             <button
               key={f}
               className={`btn btn-sm ${filter === f ? "btn-primary" : "btn-ghost"}`}
@@ -2738,15 +2734,13 @@ export function AdminPrayerWall() {
                     {new Date(p.createdAt).toLocaleDateString()}
                   </td>
                   <td>
-                    {p.answered ? (
-                      <span className="badge badge-green">Answered</span>
-                    ) : (
-                      <span className="badge badge-gold">Active</span>
-                    )}
+                    {!p.approved ? <span className="badge badge-gold">Pending approval</span> : p.answered ? <span className="badge badge-green">Answered</span> : <span className="badge badge-green">Published</span>}
                   </td>
                   <td>
                     <div style={{ display: "flex", gap: 6 }}>
-                      {!p.answered && (
+                      {!p.approved && <button className="btn btn-success btn-sm" onClick={() => setApproval(p._id, true)} title="Approve and publish">Approve</button>}
+                      {p.approved && <button className="btn btn-ghost btn-sm" onClick={() => setApproval(p._id, false)} title="Hide from public">Hide</button>}
+                      {p.approved && !p.answered && (
                         <button
                           className="btn btn-success btn-sm"
                           onClick={() => markAnswered(p._id)}
