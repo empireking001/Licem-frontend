@@ -4,6 +4,7 @@ import { Icon, Spinner, ToastDisplay } from '../components/UI';
 import AdminOverview  from './AdminOverview';
 import AdminSermons   from './AdminSermons';
 import AdminEvents    from './AdminEvents';
+import AdminRadio     from './AdminRadio';
 import AdminBlog      from './AdminBlog';
 import AdminGallery   from './AdminGallery';
 import AdminConnectManager from './AdminConnectManager';
@@ -23,6 +24,7 @@ const MENU = [
   { key: "overview", label: "Overview", icon: "activity" },
   { key: "sermons", label: "Sermons", icon: "video" },
   { key: "events", label: "Events", icon: "calendar" },
+  { key: "radio", label: "Radio Management", icon: "music" },
   { key: "blog", label: "Blog Posts", icon: "file" },
   { key: "gallery", label: "Gallery", icon: "images" },
   { key: "media", label: "Media Library", icon: "image" },
@@ -239,6 +241,7 @@ export default function AdminApp() {
     overview: <AdminOverview setActive={setActive} />,
     sermons: <AdminSermons />,
     events: <AdminEvents />,
+    radio: <AdminRadio />,
     blog: <AdminBlog />,
     gallery: <AdminGallery />,
     media: <AdminMedia />,

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { Icon, Spinner } from '../components/UI';
+import DailyVerse from '../components/DailyVerse';
 import API, { sermonsAPI, eventsAPI } from '../api';
 
 export default function HomePage() {
@@ -354,6 +355,8 @@ export default function HomePage() {
           <Icon name="chevDown" size={22} color="rgba(255,255,255,0.4)" />
         </div>
       </section>
+
+      <DailyVerse />
 
       {/* ── UPCOMING EVENTS ──────────────────────── */}
       <section className="section" style={{ background: "var(--cream)" }}>

@@ -1256,6 +1256,19 @@ export function AdminSettings() {
                   />
                 </div>
 
+                <div style={{ marginTop: 8, paddingTop: 18, borderTop: "1px solid var(--gray-light)" }}>
+                  <h4 style={{ fontSize: 16, fontFamily: "var(--font-body)", fontWeight: 700, marginBottom: 8 }}>Daily Bible Verse</h4>
+                  <p style={{ fontSize: 13, color: "var(--gray-mid)", marginBottom: 14 }}>The homepage rotates through a curated verse each day. Enter both fields to override today’s verse with your own selection.</p>
+                  <label style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, cursor: "pointer" }}>
+                    <button type="button" aria-pressed={s?.dailyVerseEnabled !== false} className={`toggle ${s?.dailyVerseEnabled !== false ? "on" : ""}`} onClick={() => U("dailyVerseEnabled", s?.dailyVerseEnabled === false)} />
+                    <span style={{ fontSize: 14, fontWeight: 600 }}>Show Daily Bible Verse on the homepage</span>
+                  </label>
+                  <div className="grid-2">
+                    <div className="form-group"><label>Verse Text Override</label><textarea rows={3} value={s?.dailyVerseText || ""} onChange={(e) => U("dailyVerseText", e.target.value)} placeholder="Leave blank to use the daily rotation" /></div>
+                    <div className="form-group"><label>Reference</label><input value={s?.dailyVerseReference || ""} onChange={(e) => U("dailyVerseReference", e.target.value)} placeholder="e.g. Psalm 23:1" /></div>
+                  </div>
+                </div>
+
                 <div style={{ marginTop: 8 }}>
                   <h4
                     style={{
