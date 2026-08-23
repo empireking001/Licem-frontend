@@ -2613,8 +2613,9 @@ export function AdminPrayerWall() {
   };
   useEffect(() => { load(); }, []);
 
-  const setApproval = async (id, approved) => {
-    try { const r = await API.put(`/prayers/${id}/approval`, { approved }); setPrayers((items) => items.map((x) => x._id === id ? r.data : x)); showToast(approved ? "Prayer approved and published." : "Prayer rejected."); }
+  const setApproval = async (id, approved, rejected = false) => {
+    const note = !approved ? (window.prompt("Optional moderation note:", "") || "") : "";
+    try { const r = await API.put(`/prayers/${id}/approval`, { approved, rejected, note }); setPrayers((items) => items.map((x) => x._id === id ? r.data : x)); showToast(approved ? "Prayer approved and published." : "Prayer rejected and kept private."); }
     catch { showToast("Could not update prayer approval.", "error"); }
   };
 
@@ -2642,7 +2643,7 @@ export function AdminPrayerWall() {
     }
   };
 
-  const filtered = filter === "All" ? prayers : filter === "Pending" ? prayers.filter((p) => !p.approved) : filter === "Answered" ? prayers.filter((p) => p.answered && p.approved) : prayers.filter((p) => p.approved && !p.answered);
+  const filtered = filter === "All" ? prayers : filter === "Pending" ? prayers.filter((p) => !p.approved && p.moderationStatus !== "rejected") : filter === "Answered" ? prayers.filter((p) => p.answered && p.approved) : filter === "Active" ? prayers.filter((p) => p.approved && !p.answered) : prayers.filter((p) => p.moderationStatus === "rejected");
   const totalPrayers = prayers.reduce((a, p) => a + (p.prayerCount || 0), 0);
 
   return (
@@ -2658,11 +2659,11 @@ export function AdminPrayerWall() {
         <div>
           <h3 style={{ fontSize: 20 }}>Prayer Wall</h3>
           <p style={{ color: "var(--gray-mid)", fontSize: 14, marginTop: 4 }}>
-            {prayers.length} requests · {totalPrayers} times prayed
+            {prayers.length} requests · {prayers.filter((p) => !p.approved && p.moderationStatus !== "rejected").length} pending · {totalPrayers} times prayed
           </p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          {["All", "Pending", "Active", "Answered"].map((f) => (
+          {["All", "Pending", "Active", "Answered", "Rejected"].map((f) => (
             <button
               key={f}
               className={`btn btn-sm ${filter === f ? "btn-primary" : "btn-ghost"}`}
@@ -2734,11 +2735,13 @@ export function AdminPrayerWall() {
                     {new Date(p.createdAt).toLocaleDateString()}
                   </td>
                   <td>
-                    {!p.approved ? <span className="badge badge-gold">Pending approval</span> : p.answered ? <span className="badge badge-green">Answered</span> : <span className="badge badge-green">Published</span>}
+                    {!p.approved && p.moderationStatus === "rejected" ? <span className="badge" style={{ background: "#ffeeee", color: "#cc0000" }}>Rejected · Private</span> : !p.approved ? <span className="badge badge-gold">Pending approval</span> : p.answered ? <span className="badge badge-green">Answered</span> : <span className="badge badge-green">Published</span>}
+                    {p.moderationNote && <div style={{ fontSize: 11, color: "var(--gray-mid)", marginTop: 5 }} title={p.moderationNote}>Note: {p.moderationNote.slice(0, 50)}{p.moderationNote.length > 50 ? "…" : ""}</div>}
                   </td>
                   <td>
                     <div style={{ display: "flex", gap: 6 }}>
                       {!p.approved && <button className="btn btn-success btn-sm" onClick={() => setApproval(p._id, true)} title="Approve and publish">Approve</button>}
+                      {!p.approved && p.moderationStatus !== "rejected" && <button className="btn btn-ghost btn-sm" onClick={() => setApproval(p._id, false, true)} title="Reject and keep private">Reject</button>}
                       {p.approved && <button className="btn btn-ghost btn-sm" onClick={() => setApproval(p._id, false)} title="Hide from public">Hide</button>}
                       {p.approved && !p.answered && (
                         <button
