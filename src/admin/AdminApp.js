@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Component, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Icon, Spinner, ToastDisplay } from '../components/UI';
 import AdminOverview  from './AdminOverview';
@@ -31,7 +31,7 @@ const MENU = [
   { key: "radio", label: "Radio Management", icon: "music" },
   { key: "books", label: "Book Library", icon: "bookOpen" },
   { key: "devotionals", label: "Weekly Devotionals", icon: "bookOpen" },
-  { key: "blog", label: "Blog Posts", icon: "file" },
+  { key: "blog", label: "Blog & Articles", icon: "file" },
   { key: "gallery", label: "Gallery", icon: "images" },
   { key: "media", label: "Media Library", icon: "image" },
   { key: "prayer", label: "Prayer Wall", icon: "heart" },
@@ -272,12 +272,32 @@ export default function AdminApp() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
         <AdminHeader active={active} user={user} onViewSite={() => setPage('home')} />
         <main style={{ flex: 1, overflow: 'auto' }} className="animate-fade">
-          {PANELS[active] || <AdminOverview setActive={setActive} />}
+          <AdminPanelBoundary panel={active}>
+            {PANELS[active] || <AdminOverview setActive={setActive} />}
+          </AdminPanelBoundary>
         </main>
       </div>
       <ToastDisplay />
     </div>
   );
+}
+
+class AdminPanelBoundary extends Component {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error) { console.error("Admin panel error", this.props.panel, error); }
+  render() {
+    if (!this.state.hasError) return this.props.children;
+    return (
+      <div style={{ padding: 40, maxWidth: 620, margin: "0 auto", textAlign: "center" }}>
+        <div className="card" style={{ padding: 32 }}>
+          <h3 style={{ marginBottom: 10 }}>This panel could not load</h3>
+          <p style={{ color: "var(--gray-mid)", lineHeight: 1.7, marginBottom: 20 }}>The panel encountered a temporary error. Other admin areas remain available.</p>
+          <button className="btn btn-primary" onClick={() => this.setState({ hasError: false })}>Try Again</button>
+        </div>
+      </div>
+    );
+  }
 }
 
 function AdminChangePassword() {
