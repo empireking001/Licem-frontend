@@ -73,16 +73,21 @@ export default function AdminGallery() {
 
   const handleFiles = async (files) => {
     if (!selected || !files?.length) return;
+    const selectedFiles = Array.from(files);
+    if (selectedFiles.some(file => file.size > 50 * 1024 * 1024)) {
+      showToast('Each photo must be 50MB or smaller.', 'error');
+      return;
+    }
     setUploading(true);
     const fd = new FormData();
-    Array.from(files).forEach(f => fd.append('images', f));
+    selectedFiles.forEach(f => fd.append('images', f));
     try {
       const r = await galleryAPI.uploadImages(selected._id, fd);
       setSelected(r.data.album);
       setAlbums(a => a.map(x => x._id === r.data.album._id ? { ...x, coverImage: r.data.album.coverImage } : x));
       showToast(`${r.data.images.length} photo(s) uploaded!`);
     } catch (e) { showToast(e.response?.data?.message || 'Upload failed.', 'error'); }
-    setUploading(false);
+    finally { setUploading(false); }
   };
 
   const saveCaption = async (imgId, caption) => {

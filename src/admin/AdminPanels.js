@@ -771,21 +771,26 @@ export function AdminMedia() {
   useEffect(() => { load(); }, []);
 
   const uploadFiles = async (e) => {
+    const selected = Array.from(e.target.files || []);
+    if (!selected.length) return;
+    if (selected.some((file) => file.size > 50 * 1024 * 1024)) {
+      showToast("Each file must be 50MB or smaller.", "error");
+      e.target.value = "";
+      return;
+    }
     const fd = new FormData();
-    Array.from(e.target.files).forEach((f) => fd.append("files", f));
+    selected.forEach((f) => fd.append("files", f));
     try {
       const r = await mediaAPI.upload(fd);
       setFiles((f) => [
-        ...r.data.files.map((x) => ({
-          ...x,
-          size: x.size,
-          uploadedAt: new Date(),
-        })),
+        ...r.data.files.map((x) => ({ ...x, size: x.size, uploadedAt: new Date() })),
         ...f,
       ]);
       showToast(`${r.data.files.length} file(s) uploaded!`);
-    } catch {
-      showToast("Upload failed.", "error");
+    } catch (err) {
+      showToast(err.response?.data?.message || "Upload failed.", "error");
+    } finally {
+      e.target.value = "";
     }
   };
 
@@ -1522,13 +1527,14 @@ export function AdminSettings() {
                                 },
                                 body: fd,
                               });
-                              const data = await res.json();
-                              if (data.files && data.files[0]) {
-                                const url = data.files[0].url.startsWith("/")
-                                  ? resolveMediaUrl(data.files[0].url)
-                                  : data.files[0].url;
-                                U("faceOfWeekImage", url);
-                              }
+                              const raw = await res.text();
+                              let data = {};
+                              try { data = raw ? JSON.parse(raw) : {}; } catch { throw new Error(`Upload service returned an invalid response (${res.status}).`); }
+                              if (!res.ok || !data.files?.[0]?.url) throw new Error(data.message || `Upload failed (${res.status})`);
+                              const url = data.files[0].url.startsWith("/")
+                                ? resolveMediaUrl(data.files[0].url)
+                                : data.files[0].url;
+                              U("faceOfWeekImage", url);
                             } catch {
                               alert("Upload failed. Try URL below.");
                             }
@@ -1934,12 +1940,12 @@ export function AdminSettings() {
                               },
                               body: fd,
                             });
-                            const data = await res.json();
-                            if (data.files && data.files[0]) {
-                                                              const url = resolveMediaUrl(data.files[0].url);
-
-                              U("heroImageUrl", url);
-                            }
+                            const raw = await res.text();
+                            let data = {};
+                            try { data = raw ? JSON.parse(raw) : {}; } catch { throw new Error(`Upload service returned an invalid response (${res.status}).`); }
+                            if (!res.ok || !data.files?.[0]?.url) throw new Error(data.message || `Upload failed (${res.status})`);
+                            const url = resolveMediaUrl(data.files[0].url);
+                            U("heroImageUrl", url);
                           } catch {
                             alert(
                               "Upload failed. Try pasting a URL below instead.",

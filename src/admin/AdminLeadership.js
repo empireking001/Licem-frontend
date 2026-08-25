@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Icon, Spinner } from '../components/UI';
-import { resolveMediaUrl, teamMembersAPI } from '../api';
+import { resolveMediaUrl, teamMembersAPI, API_BASE_URL } from '../api';
 import { useApp } from '../context/AppContext';
 
 const EMPTY = { name: '', role: '', bio: '', image: '', sortOrder: 0, published: true, consentConfirmed: false };
@@ -72,11 +72,13 @@ export default function AdminLeadership() {
     const data = new FormData();
     data.append('files', file);
     try {
-      const response = await fetch('/api/media/upload', { method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('gl_token')}` }, body: data });
-      const result = await response.json();
+      const response = await fetch(`${API_BASE_URL}/media/upload`, { method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('gl_token')}` }, body: data });
+      const raw = await response.text();
+      let result = {};
+      try { result = raw ? JSON.parse(raw) : {}; } catch { result = { message: `Upload service returned an invalid response (${response.status}).` }; }
       const url = result.files?.[0]?.url;
-      if (url) setField('image', url.startsWith('/') ? resolveMediaUrl(url) : url);
-      else throw new Error(result.message || 'Upload failed');
+      if (!response.ok || !url) throw new Error(result.message || `Upload failed (${response.status})`);
+      setField('image', url.startsWith('/') ? resolveMediaUrl(url) : url);
     } catch (err) { showToast(err.message || 'Image upload failed.', 'error'); }
     event.target.value = '';
   };
