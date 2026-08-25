@@ -69,7 +69,7 @@ export default function GivePage() {
               {/* Bank details */}
               <div style={{ marginTop: 32, padding: '22px 24px', background: 'var(--forest-ghost)', borderRadius: 'var(--radius)', border: '1px solid var(--forest-pale)' }}>
                 <h4 style={{ fontSize: 16, marginBottom: 12, color: 'var(--forest)' }}>Direct Bank Transfer</h4>
-                {[['Bank', 'First Bank of Nigeria'], ['Account Name', 'GraceLife Church'], ['Account Number', '3012345678'], ['Sort Code', '011']].map(([l, v]) => (
+                {[['Bank', 'First Bank of Nigeria'], ['Account Name', 'LICEM — Living Christ Evangelical Ministries'], ['Account Number', '3012345678'], ['Sort Code', '011']].map(([l, v]) => (
                   <div key={l} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, padding: '6px 0', borderBottom: '1px solid var(--forest-pale)' }}>
                     <span style={{ color: 'var(--gray-mid)' }}>{l}</span>
                     <strong>{v}</strong>

@@ -49,17 +49,17 @@ const [loading, setLoading] = useState(false);
                 {
                   icon: "mail",
                   label: "Email",
-                  val: settings?.email || "hello@gracelifechurch.org",
+                  val: settings?.email || "Email available in Site Settings",
                 },
                 {
                   icon: "activity",
                   label: "Sunday Services",
-                  val: "Every Sunday — 9:00 AM & 11:00 AM",
+                  val: settings?.sundayTimes || "Every Sunday — 9:00 AM & 11:00 AM",
                 },
                 {
                   icon: "calendar",
                   label: "Midweek Service",
-                  val: "Every Wednesday — 6:30 PM",
+                  val: settings?.midweekTime || "Every Wednesday — 6:30 PM",
                 },
                 {
                   icon: "users",

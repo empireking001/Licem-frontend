@@ -75,7 +75,7 @@ export default function Footer() {
             <div style={{ color: 'white', fontWeight: 700, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 18 }}>Contact</div>
             {[
                 settings?.footerAddress || settings?.address || '14 Grace Avenue, Victoria Island, Lagos',
-                settings?.footerEmail   || settings?.email   || 'hello@gracelifechurch.org',
+                settings?.footerEmail   || settings?.email   || 'Email available in Site Settings',
                 settings?.footerPhone   || settings?.phone   || '+234 801 234 5678',
                 settings?.sundayTimes   || 'Sunday: 9AM & 11AM',  
                 settings?.midweekTime   || 'Wednesday: 6:30PM',

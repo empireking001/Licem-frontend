@@ -6,7 +6,7 @@ const TEAM = [
     name: "Rev. Oluwaseye Oduwale",
     role: "LICEM General Overseer Worldwide",
     img: "https://licem.org/wp-content/uploads/2022/10/WhatsApp-Image-2022-09-18-at-6.18.30-PM.jpeg",
-    bio: "Leading GraceLife for over 20 years with a passion for biblical teaching and community transformation.",
+    bio: "Leading LICEM with a passion for biblical teaching, soul winning, and community transformation.",
   },
   {
     name: "Rev. Toyin H. Oduwale",

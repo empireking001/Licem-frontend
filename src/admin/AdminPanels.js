@@ -1318,7 +1318,7 @@ export function AdminSettings() {
                           type="email"
                           value={s?.footerEmail || s?.email || ""}
                           onChange={(e) => U("footerEmail", e.target.value)}
-                          placeholder="hello@gracelifechurch.org"
+                          placeholder="ministry email address"
                         />
                       </div>
                       <div className="form-group">
