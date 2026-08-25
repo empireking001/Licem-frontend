@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApp } from "../context/AppContext";
-import { settingsAPI, resolveMediaUrl } from "../api";
+import { settingsAPI, resolveMediaUrl, API_BASE_URL } from "../api";
 import { Spinner } from "../components/UI";
 
 const empty = { faceOfWeekName: "", faceOfWeekTitle: "", faceOfWeekBio: "", faceOfWeekQuote: "", faceOfWeekImage: "" };
@@ -29,9 +29,11 @@ export default function AdminFaceOfWeek() {
     setUploading(true);
     try {
       const body = new FormData(); body.append("files", file);
-      const response = await fetch("/api/media/upload", { method: "POST", headers: { Authorization: `Bearer ${localStorage.getItem("gl_token")}` }, body });
-      const data = await response.json();
-      if (!response.ok || !data.files?.[0]) throw new Error(data.message || "Upload failed");
+      const response = await fetch(`${API_BASE_URL}/media/upload`, { method: "POST", headers: { Authorization: `Bearer ${localStorage.getItem("gl_token")}` }, body });
+      const raw = await response.text();
+      let data = {};
+      try { data = raw ? JSON.parse(raw) : {}; } catch { data = { message: `Upload service returned an invalid response (${response.status}).` }; }
+      if (!response.ok || !data.files?.[0]) throw new Error(data.message || `Upload failed (${response.status})`);
       update("faceOfWeekImage", resolveMediaUrl(data.files[0].url)); showToast("Photo uploaded. Save to publish it.");
     } catch (error) { showToast(error.message || "Photo upload failed.", "error"); }
     finally { setUploading(false); }

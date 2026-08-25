@@ -9,6 +9,7 @@ import API, {
   contactAPI,
   subscribersAPI,
   resolveMediaUrl,
+  API_BASE_URL,
 } from "../api";
 import {
   Icon,
@@ -1514,7 +1515,7 @@ export function AdminSettings() {
                             const fd = new FormData();
                             fd.append("files", file);
                             try {
-                              const res = await fetch("/api/media/upload", {
+                              const res = await fetch(`${API_BASE_URL}/media/upload`, {
                                 method: "POST",
                                 headers: {
                                   Authorization: `Bearer ${localStorage.getItem("gl_token")}`,
@@ -1926,7 +1927,7 @@ export function AdminSettings() {
                           const fd = new FormData();
                           fd.append("files", file);
                           try {
-                            const res = await fetch("/api/media/upload", {
+                            const res = await fetch(`${API_BASE_URL}/media/upload`, {
                               method: "POST",
                               headers: {
                                 Authorization: `Bearer ${localStorage.getItem("gl_token")}`,
