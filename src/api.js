@@ -146,6 +146,14 @@ export const settingsAPI = {
   update: (data) => API.put("/settings", data),
 };
 
+export const teamMembersAPI = {
+  getPublic: () => API.get("/team-members/public"),
+  getAll: () => API.get("/team-members"),
+  create: (data) => API.post("/team-members", data),
+  update: (id, data) => API.put(`/team-members/${id}`, data),
+  delete: (id) => API.delete(`/team-members/${id}`),
+};
+
 export const contactAPI = {
   getAll: () => API.get("/contact"),
   markRead: (id) => API.put(`/contact/${id}/read`),

@@ -1,44 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Icon, PageBanner, SectionHeader } from '../components/UI';
+import { resolveMediaUrl, teamMembersAPI } from '../api';
 import { useApp } from '../context/AppContext';
 
-const TEAM = [
-  {
-    name: "Rev. Oluwaseye Oduwale",
-    role: "LICEM General Overseer Worldwide",
-    img: "https://licem.org/wp-content/uploads/2022/10/WhatsApp-Image-2022-09-18-at-6.18.30-PM.jpeg",
-    bio: "Leading LICEM with a passion for biblical teaching, soul winning, and community transformation.",
-  },
-  {
-    name: "Rev. Toyin H. Oduwale",
-    role: "Love District Head Minister",
-    img: "https://licem.org/wp-content/uploads/2022/10/WhatsApp-Image-2022-09-18-at-6.16.24-PM-1.jpeg",
-    bio: "Overseeing women's ministry and discipleship programs with warmth, wisdom and deep pastoral care.",
-  },
-  {
-    name: "Rev. Oduwusi",
-    role: "Love District Head Minister",
-    img: "https://licem.org/wp-content/uploads/2023/06/mama-oduwusi.jpg",
-    bio: "Overseeing women's ministry and discipleship programs with warmth, wisdom and deep pastoral care.",
-  },
-  {
-    name: "Rev. Itunu Oluokun",
-    role: "Comfort District Head Minister",
-    img: "https://licem.org/wp-content/uploads/2023/06/pastor-itunu-oluokun2.jpg",
-    bio: "Passionate about raising a generation of young people who live boldly for Christ in every sphere.",
-  },
-  {
-    name: "Rev. Festus Akindunmade",
-    role: "Prosperity District Head Minister",
-    img: "https://licem.org/wp-content/uploads/2023/06/rev.-festus-akindunmade.jpg",
-    bio: "Passionate about raising a generation of young people who live boldly for Christ in every sphere.",
-  },
-  {
-    name: "Evang. Oluwanisola Ola",
-    role: "National Evangelist",
-    img: "https://licem.org/wp-content/uploads/2023/06/evangelist-oluwanisola-ola.jpg",
-    bio: "Passionate about raising a generation of young people who live boldly for Christ in every sphere.",
-  },
-];
+
 
 const BELIEFS = [
   { title: 'The Holy Bible', body: 'We believe the Bible is the inspired, infallible Word of God — our supreme authority for faith and life in all matters.' },
@@ -51,6 +16,17 @@ const BELIEFS = [
 
 export default function AboutPage() {
   const { showToast, pageTopPadding, setPage } = useApp();
+  const [team, setTeam] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    teamMembersAPI.getPublic().then(({ data }) => {
+      if (active) setTeam(Array.isArray(data) ? data : []);
+    }).catch(() => {
+      if (active) setTeam([]);
+    });
+    return () => { active = false; };
+  }, []);
 
   return (
     <div style={{ paddingTop: 70 }}>
@@ -193,9 +169,9 @@ The ministry started in the early part of 1973 as a group of men and women with 
             subtitle="Passionate shepherds committed to guiding this God's children with wisdom and love."
           />
           <div className="grid-4">
-            {TEAM.map((m, i) => (
+            {team.map((m, i) => (
               <div
-                key={m.name}
+                key={m._id || m.name}
                 className="card card-lift animate-up"
                 style={{
                   textAlign: "center",
@@ -214,7 +190,7 @@ The ministry started in the early part of 1973 as a group of men and women with 
                     boxShadow: "0 4px 16px rgba(184,134,11,0.2)",
                   }}
                 >
-                  <img src={m.img} alt={m.name} className="img-cover" />
+                  <img src={resolveMediaUrl(m.image)} alt={m.name} className="img-cover" />
                 </div>
                 <h4 style={{ marginBottom: 5, fontSize: 18 }}>{m.name}</h4>
                 <p
